@@ -27,7 +27,10 @@ export function ShuffleGrid() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [squares, setSquares] = useState(shuffle(imgs))
   useEffect(() => {
-    const run = () => { setSquares(shuffle(imgs)); timeoutRef.current = setTimeout(run, 3000) }
+    const run = () => {
+      setSquares(shuffle(imgs))
+      timeoutRef.current = setTimeout(run, 3000)
+    }
     timeoutRef.current = setTimeout(run, 3000)
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current) }
   }, [])
