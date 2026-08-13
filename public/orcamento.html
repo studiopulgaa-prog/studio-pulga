@@ -12,7 +12,7 @@
   --br: #6E2C14;
   --br2: #5A2210;
   --border: rgba(110,44,20,0.14);
-  --border-active: rgba(110,44,20,0.5);
+  --border-active: rgba(110,44,20,0.7);
   --gray: rgba(110,44,20,0.55);
   --gray2: rgba(110,44,20,0.35);
   --faint: rgba(110,44,20,0.06);
@@ -30,7 +30,27 @@ body {
   overflow-x:hidden;
   padding-bottom:130px;
   min-height:100vh;
+  position:relative;
 }
+
+/* WATERMARK */
+.watermark {
+  position:fixed; inset:0; z-index:0;
+  pointer-events:none; overflow:hidden;
+  display:flex; flex-direction:column;
+  justify-content:center;
+  gap:0;
+}
+.wm-row {
+  display:flex; white-space:nowrap;
+  font-family:'League Spartan',sans-serif;
+  font-weight:900; font-size:clamp(48px,8vw,96px);
+  letter-spacing:-0.02em; line-height:1.1;
+  color:rgba(110,44,20,0.055);
+  user-select:none;
+}
+.wm-row:nth-child(even) { transform:translateX(-120px); }
+.page { position:relative; z-index:1; }
 
 /* ── NAV ── */
 .nav {
@@ -202,8 +222,9 @@ body {
 .opcao-principal:hover { border-color:var(--border-active); }
 .opcao-principal.on {
   border-color:var(--br);
-  background:rgba(255,255,255,0.7);
-  box-shadow:0 0 0 3px rgba(110,44,20,0.07);
+  border-width:2px;
+  background:rgba(255,255,255,0.82);
+  box-shadow:0 0 0 4px rgba(110,44,20,0.10), 0 4px 20px rgba(110,44,20,0.10);
 }
 
 .opcao-header {
@@ -251,8 +272,9 @@ body {
 .sub-cat:hover { border-color:var(--border-active); }
 .sub-cat.on {
   border-color:var(--br);
-  background:rgba(255,255,255,0.6);
-  box-shadow:0 0 0 2px rgba(110,44,20,0.06);
+  border-width:2px;
+  background:rgba(255,255,255,0.75);
+  box-shadow:0 0 0 3px rgba(110,44,20,0.09), 0 2px 12px rgba(110,44,20,0.08);
 }
 
 .sub-cat-header {
@@ -295,8 +317,9 @@ body {
 .filha-item:hover { border-color:var(--border-active); background:rgba(255,255,255,0.5); }
 .filha-item.on {
   border-color:var(--br);
-  background:rgba(110,44,20,0.05);
-  box-shadow:0 0 0 2px rgba(110,44,20,0.06);
+  border-width:2px;
+  background:rgba(110,44,20,0.06);
+  box-shadow:0 0 0 3px rgba(110,44,20,0.08);
 }
 
 .filha-radio {
@@ -358,6 +381,16 @@ body {
 </head>
 <body>
 
+<div class="watermark" aria-hidden="true">
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+</div>
 <nav class="nav">
   <a href="/index.html" class="nav-logo">STUDIO PULGA</a>
   <a href="/index.html" class="nav-back">← Voltar</a>
