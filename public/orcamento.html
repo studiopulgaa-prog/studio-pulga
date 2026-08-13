@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Pulga ~ Monte sua proposta</title>
+<title>Studio Pulga — Nossos Serviços</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=League+Spartan:wght@300;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -15,99 +15,52 @@
   --gray: rgba(110,44,20,0.55);
   --gray2: rgba(110,44,20,0.35);
   --faint: rgba(110,44,20,0.06);
-  --card: rgba(255,255,255,0.82);
+  --card: rgba(255,255,255,0.85);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--br); overflow-x:hidden; padding-bottom:100px; }
+body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--br); overflow-x:hidden; padding-bottom:120px; }
 
 /* NAV */
-.nav {
-  position:fixed; top:0; left:0; right:0; z-index:200;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px 40px;
-  background:rgba(244,234,221,0.92); backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-}
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:16px 40px; background:rgba(244,234,221,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
 .nav-logo { font-family:'League Spartan',sans-serif; font-weight:900; font-size:16px; letter-spacing:-0.02em; text-decoration:none; color:var(--br); }
-.nav-back { font-size:13px; color:var(--gray); text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s; }
+.nav-back { font-size:13px; color:var(--gray); text-decoration:none; transition:color 0.2s; }
 .nav-back:hover { color:var(--br); }
 
 /* PAGE */
-.page { max-width:760px; margin:0 auto; padding:100px 24px 40px; }
+.page { max-width:720px; margin:0 auto; padding:100px 24px 40px; }
 
-.page-title {
-  font-family:'League Spartan',sans-serif; font-weight:900;
-  font-size:clamp(64px,12vw,120px); line-height:0.88; letter-spacing:-0.03em;
-  margin-bottom:14px; text-align:center;
-  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both;
-}
+/* TITLE */
+.page-title { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(64px,12vw,112px); line-height:0.88; letter-spacing:-0.03em; margin-bottom:14px; text-align:center; animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both; }
 .page-title em { display:block; font-style:italic; font-weight:300; color:var(--gray); }
-.page-sub {
-  font-size:15px; color:var(--gray); text-align:center; margin-bottom:56px;
-  font-weight:300; line-height:1.6;
-  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both;
-}
+.page-sub { font-size:15px; color:var(--gray); text-align:center; margin-bottom:52px; font-weight:300; line-height:1.6; animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
 
-/* STEP CARDS */
-.step-card {
-  background:var(--card); border:1px solid var(--border); border-radius:20px;
-  padding:32px 28px; margin-bottom:16px;
-  backdrop-filter:blur(10px);
-  opacity:0; transform:translateY(32px);
-  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
-}
+/* STEP CARD */
+.step-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:32px 28px; margin-bottom:16px; backdrop-filter:blur(10px); opacity:0; transform:translateY(32px); transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
 .step-card.visible { opacity:1; transform:translateY(0); }
-
 .step-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
-.step-num {
-  width:36px; height:36px; border-radius:50%; background:var(--br);
-  color:#F4EADD; font-weight:700; font-size:14px;
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  font-family:'League Spartan',sans-serif;
-  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-}
-.step-card.visible .step-num { transform: scale(1.08); }
-.step-card.visible .step-num { animation: popNum 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-@keyframes popNum { 0%{transform:scale(0.6);} 70%{transform:scale(1.15);} 100%{transform:scale(1);} }
+.step-num { width:36px; height:36px; border-radius:50%; background:var(--br); color:#F4EADD; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:'League Spartan',sans-serif; }
 .step-title { font-family:'League Spartan',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; }
 
-/* FORM FIELDS */
+/* FORM */
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
-.form-row.single { grid-template-columns:1fr; }
 .field label { display:block; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray2); margin-bottom:7px; }
-.field input {
-  width:100%; height:44px; padding:0 14px;
-  border:1px solid var(--border); border-radius:11px;
-  background:rgba(255,255,255,0.7); font-family:'Inter',sans-serif;
-  font-size:14px; color:var(--br); outline:none; transition:all 0.2s;
-}
+.field input { width:100%; height:44px; padding:0 14px; border:1px solid var(--border); border-radius:11px; background:rgba(255,255,255,0.7); font-family:'Inter',sans-serif; font-size:14px; color:var(--br); outline:none; transition:all 0.2s; }
 .field input::placeholder { color:rgba(110,44,20,0.28); }
 .field input:focus { border-color:rgba(110,44,20,0.4); background:#fff; box-shadow:0 0 0 3px rgba(110,44,20,0.07); }
 
 /* REGIÕES */
-.regioes { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-.regiao-btn {
-  padding:8px 16px; border-radius:50px; border:1px solid var(--border);
-  background:transparent; font-family:'Inter',sans-serif; font-size:13px;
-  font-weight:500; color:var(--gray); cursor:pointer; transition:all 0.2s;
-  display:flex; align-items:center; gap:6px;
-}
+.regioes { display:flex; flex-wrap:wrap; gap:8px; }
+.regiao-btn { padding:8px 16px; border-radius:50px; border:1px solid var(--border); background:transparent; font-family:'Inter',sans-serif; font-size:13px; font-weight:500; color:var(--gray); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
 .regiao-btn::before { content:''; width:6px; height:6px; border-radius:50%; border:1.5px solid currentColor; }
 .regiao-btn:hover { border-color:var(--br); color:var(--br); }
 .regiao-btn.on { border-color:var(--br); background:var(--br); color:#F4EADD; }
 .regiao-btn.on::before { background:#F4EADD; border-color:#F4EADD; }
-.outros-row { display:flex; align-items:center; gap:10px; margin-top:4px; font-size:13px; color:var(--gray); }
-.outros-row input { flex:1; height:40px; padding:0 12px; border:1px solid var(--border); border-radius:9px; background:rgba(255,255,255,0.6); font-family:'Inter',sans-serif; font-size:13px; color:var(--br); outline:none; }
 
 /* NICHO */
-.nicho-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
-.nicho-btn {
-  padding:18px 12px; border:1px solid var(--border); border-radius:14px;
-  background:transparent; cursor:pointer; transition:all 0.25s;
-  text-align:center; font-family:'Inter',sans-serif;
-}
+.nicho-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.nicho-btn { padding:18px 12px; border:1px solid var(--border); border-radius:14px; background:transparent; cursor:pointer; transition:all 0.25s; text-align:center; font-family:'Inter',sans-serif; }
 .nicho-btn:hover { border-color:var(--br); }
 .nicho-btn.on { border-color:var(--br); background:var(--br); }
 .nicho-icon { font-size:24px; margin-bottom:8px; }
@@ -115,84 +68,64 @@ body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--br); ov
 .nicho-btn.on .nicho-name { color:#F4EADD; }
 .nicho-sub { font-size:11px; color:var(--gray); margin-top:3px; }
 .nicho-btn.on .nicho-sub { color:rgba(244,234,221,0.6); }
-
-.ig-row { display:flex; align-items:center; gap:10px; }
+.ig-row { display:flex; align-items:center; gap:10px; margin-top:16px; }
 .ig-row label { font-size:13px; color:var(--gray); white-space:nowrap; }
 .ig-row input { flex:1; height:40px; padding:0 12px; border:1px solid var(--border); border-radius:9px; background:rgba(255,255,255,0.6); font-family:'Inter',sans-serif; font-size:13px; color:var(--br); outline:none; transition:all 0.2s; }
 .ig-row input:focus { border-color:rgba(110,44,20,0.4); background:#fff; }
 
-/* SERVIÇOS AVULSOS */
-.svc-section { margin-bottom:28px; }
-.svc-section-title { font-family:'League Spartan',sans-serif; font-weight:700; font-size:18px; letter-spacing:-0.01em; margin-bottom:4px; }
-.svc-section-sub { font-size:12px; color:var(--gray); margin-bottom:14px; line-height:1.5; }
-.svc-hint {
-  background:rgba(110,44,20,0.06); border:1px solid var(--border);
-  border-radius:10px; padding:12px 16px; margin-bottom:12px;
-  font-size:12px; color:var(--gray); line-height:1.6;
-}
-.svc-hint strong { color:var(--br); font-weight:600; }
+/* OPCAO PRINCIPAL */
+.opcao-principal { border:1.5px solid var(--border); border-radius:14px; margin-bottom:10px; overflow:hidden; transition:all 0.25s; }
+.opcao-principal.on { border-color:var(--br); }
+.opcao-header { display:flex; align-items:center; gap:14px; padding:16px 20px; cursor:pointer; background:rgba(255,255,255,0.5); transition:background 0.2s; }
+.opcao-principal.on .opcao-header { background:rgba(110,44,20,0.05); }
+.radio-outer { width:20px; height:20px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; }
+.opcao-principal.on .radio-outer { border-color:var(--br); background:var(--br); }
+.radio-inner { width:7px; height:7px; border-radius:50%; background:#F4EADD; opacity:0; transition:opacity 0.2s; }
+.opcao-principal.on .radio-inner { opacity:1; }
+.opcao-label { font-size:15px; font-weight:500; color:var(--br); }
+.opcao-sub-label { font-size:12px; color:var(--gray); margin-top:2px; }
 
-.svc-item {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 18px; border:1px solid var(--border); border-radius:12px;
-  background:rgba(255,255,255,0.5); cursor:pointer; margin-bottom:8px;
-  transition:all 0.2s; gap:12px;
-}
-.svc-item:hover { border-color:rgba(110,44,20,0.3); background:rgba(255,255,255,0.8); }
-.svc-item.on { border-color:var(--br); background:rgba(110,44,20,0.05); }
-.svc-check {
-  width:20px; height:20px; border-radius:6px; border:1.5px solid var(--border);
-  flex-shrink:0; display:flex; align-items:center; justify-content:center;
-  transition:all 0.2s;
-}
-.svc-item.on .svc-check { background:var(--br); border-color:var(--br); }
-.svc-check svg { display:none; }
-.svc-item.on .svc-check svg { display:block; }
-.svc-info { flex:1; }
-.svc-name { font-size:14px; font-weight:500; color:var(--br); }
-.svc-desc { font-size:12px; color:var(--gray); margin-top:2px; }
-.svc-price { font-family:'League Spartan',sans-serif; font-weight:700; font-size:18px; white-space:nowrap; }
+/* SUB-ITENS */
+.sub-itens { display:none; padding:0 20px 16px 54px; }
+.sub-itens.open { display:block; animation:slideDown 0.3s cubic-bezier(0.16,1,0.3,1); }
+@keyframes slideDown { from{opacity:0;transform:translateY(-8px);} to{opacity:1;transform:translateY(0);} }
 
-/* TRAFEGO */
-.trafego-items { display:flex; flex-direction:column; gap:8px; }
-.trafego-item {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 18px; border:1.5px solid var(--border); border-radius:12px;
-  background:rgba(255,255,255,0.5); cursor:pointer; transition:all 0.25s; gap:12px;
-}
-.trafego-item:hover { border-color:rgba(110,44,20,0.3); transform:translateX(3px); }
-.trafego-item.on { border-color:var(--br); background:rgba(110,44,20,0.05); transform:translateX(3px); }
-.trafego-radio { width:18px; height:18px; border-radius:50%; border:2px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-.trafego-item.on .trafego-radio { border-color:var(--br); background:var(--br); }
-.trafego-radio-dot { width:6px; height:6px; border-radius:50%; background:#F4EADD; display:none; }
-.trafego-item.on .trafego-radio-dot { display:block; }
-.trafego-info { flex:1; }
-.trafego-name { font-size:14px; font-weight:500; color:var(--br); }
-.trafego-sub { font-size:12px; color:var(--gray); margin-top:2px; }
-.trafego-price { text-align:right; }
-.trafego-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray2); }
-.trafego-val { font-family:'League Spartan',sans-serif; font-weight:700; font-size:20px; }
-.trafego-note { font-size:11px; color:var(--gray2); margin-top:10px; line-height:1.5; }
+/* SUB-CATEGORIA */
+.sub-cat { border:1px solid var(--border); border-radius:12px; margin-bottom:8px; overflow:hidden; }
+.sub-cat.on { border-color:rgba(110,44,20,0.35); }
+.sub-cat-header { display:flex; align-items:center; gap:12px; padding:13px 16px; cursor:pointer; background:rgba(255,255,255,0.4); transition:all 0.2s; }
+.sub-cat.on .sub-cat-header { background:rgba(110,44,20,0.04); }
+.check-box { width:18px; height:18px; border-radius:5px; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; }
+.sub-cat.on .check-box { background:var(--br); border-color:var(--br); }
+.check-box svg { display:none; }
+.sub-cat.on .check-box svg { display:block; }
+.sub-cat-label { font-size:14px; font-weight:500; color:var(--br); }
+.sub-cat-sub { font-size:11px; color:var(--gray); margin-top:2px; }
 
-/* BARRA FLUTUANTE */
-.barra {
-  position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
-  width:calc(100% - 32px); max-width:760px;
-  background:var(--br); border-radius:16px; padding:16px 20px;
-  display:flex; align-items:center; justify-content:space-between;
-  box-shadow:0 8px 40px rgba(110,44,20,0.35); z-index:300; gap:16px;
-}
+/* OPCOES FILHAS */
+.filhas { display:none; padding:8px 16px 14px 46px; }
+.filha-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px; cursor:pointer; background:rgba(255,255,255,0.3); transition:all 0.2s; }
+.filha-item:last-child { margin-bottom:0; }
+.filha-item:hover { border-color:rgba(110,44,20,0.3); background:rgba(255,255,255,0.6); }
+.filha-item.on { border-color:var(--br); background:rgba(110,44,20,0.05); }
+.filha-radio { width:16px; height:16px; border-radius:50%; border:1.5px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.filha-item.on .filha-radio { border-color:var(--br); background:var(--br); }
+.filha-dot { width:5px; height:5px; border-radius:50%; background:#F4EADD; opacity:0; }
+.filha-item.on .filha-dot { opacity:1; }
+.filha-txt { font-size:13px; font-weight:400; color:var(--br); }
+.filha-desc { font-size:11px; color:var(--gray); margin-top:1px; }
+
+/* BARRA */
+.barra { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); width:calc(100% - 32px); max-width:720px; background:var(--br); border-radius:16px; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 8px 40px rgba(110,44,20,0.35); z-index:300; gap:16px; }
 .barra-left { flex:1; min-width:0; }
 .barra-label { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(244,234,221,0.55); margin-bottom:2px; }
 .barra-desc { font-size:12px; color:rgba(244,234,221,0.7); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.barra-total { font-family:'League Spartan',sans-serif; font-weight:900; font-size:28px; color:#F4EADD; white-space:nowrap; letter-spacing:-0.02em; }
-.barra-btn {
-  background:#F4EADD; color:var(--br); padding:12px 22px; border-radius:12px;
-  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
-  text-decoration:none; white-space:nowrap; transition:all 0.2s; display:flex; align-items:center; gap:8px;
-}
+.barra-btn { background:#F4EADD; color:var(--br); padding:12px 22px; border-radius:12px; font-family:'Inter',sans-serif; font-size:13px; font-weight:700; text-decoration:none; white-space:nowrap; transition:all 0.2s; display:flex; align-items:center; gap:8px; cursor:pointer; border:none; }
 .barra-btn:hover { background:#e8d5c0; }
 .barra-btn svg { width:16px; height:16px; }
+
+/* NOTE */
+.page-note { text-align:center; font-size:11px; color:var(--gray2); margin-top:20px; line-height:1.6; }
 
 /* RESPONSIVE */
 @media (max-width:600px) {
@@ -208,225 +141,190 @@ body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--br); ov
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">STUDIO PULGA</a>
-  <a href="index.html" class="nav-back">← Voltar ao site</a>
+  <a href="/index.html" class="nav-logo">STUDIO PULGA</a>
+  <a href="/index.html" class="nav-back">← Voltar ao site</a>
 </nav>
 
 <div class="page">
 
   <h1 class="page-title">
-    <span style="display:block">Conheça nossos</span>
-    <em>avulsos.</em>
+    <span style="display:block">Nossos</span>
+    <em>serviços.</em>
   </h1>
-  <p class="page-sub">Escolha qual serviço ou quantos precisam, para uma única vez ou quantas preferir</p>
+  <p class="page-sub">Criação mensal, eventos, vídeos únicos ou gestão completa</p>
 
-  <!-- STEP 1: SOBRE VOCÊ -->
+  <!-- STEP 1 -->
   <div class="step-card">
     <div class="step-header">
       <div class="step-num">1</div>
       <div class="step-title">Sobre você</div>
     </div>
-
     <div class="form-row">
-      <div class="field">
-        <label>Seu nome *</label>
-        <input type="text" id="fNome" placeholder="Como podemos te chamar?" oninput="upd()">
-      </div>
-      <div class="field">
-        <label>Telefone / WhatsApp *</label>
-        <input type="tel" id="fTel" placeholder="(13) 99999-9999" oninput="upd()">
-      </div>
+      <div class="field"><label>Seu nome *</label><input type="text" id="fNome" placeholder="Como podemos te chamar?"></div>
+      <div class="field"><label>Telefone / WhatsApp *</label><input type="tel" id="fTel" placeholder="(13) 99999-9999"></div>
     </div>
-
-    <div class="field" style="margin-bottom:14px">
-      <label>Região de atendimento</label>
+    <div class="field" style="margin-bottom:0">
+      <label style="display:block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray2);margin-bottom:10px;">Região de atendimento</label>
       <div class="regioes">
+        <button class="regiao-btn on" onclick="selRegiao(this,'Praia Grande')">Praia Grande</button>
         <button class="regiao-btn" onclick="selRegiao(this,'Santos')">Santos</button>
         <button class="regiao-btn" onclick="selRegiao(this,'São Vicente')">São Vicente</button>
-        <button class="regiao-btn on" onclick="selRegiao(this,'Praia Grande')">Praia Grande</button>
         <button class="regiao-btn" onclick="selRegiao(this,'Mongaguá')">Mongaguá</button>
-        <button class="regiao-btn" onclick="selRegiao(this,'São Paulo')">São Paulo</button>
         <button class="regiao-btn" onclick="selRegiao(this,'Guarujá')">Guarujá</button>
-      </div>
-      <div class="outros-row">
-        <span>Outros:</span>
-        <input type="text" id="fOutros" placeholder="Digite sua cidade..." oninput="upd()">
+        <button class="regiao-btn" onclick="selRegiao(this,'São Paulo')">São Paulo</button>
       </div>
     </div>
   </div>
 
-  <!-- STEP 2: NICHO -->
+  <!-- STEP 2 -->
   <div class="step-card">
     <div class="step-header">
       <div class="step-num">2</div>
-      <div class="step-title">Qual é o seu nicho? *</div>
+      <div class="step-title">Qual é o seu nicho?</div>
     </div>
-
     <div class="nicho-grid">
-      <button class="nicho-btn" onclick="selNicho(this)">
-        <div class="nicho-icon">🏛️</div>
-        <div class="nicho-name">Arquitetura</div>
-        <div class="nicho-sub">escritórios e arquitetos</div>
-      </button>
-      <button class="nicho-btn" onclick="selNicho(this)">
-        <div class="nicho-icon">👷</div>
-        <div class="nicho-name">Engenharia</div>
-        <div class="nicho-sub">construtoras e engenheiros</div>
-      </button>
-      <button class="nicho-btn" onclick="selNicho(this)">
-        <div class="nicho-icon">🏬</div>
-        <div class="nicho-name">Loja</div>
-        <div class="nicho-sub">lojistas e comércio</div>
-      </button>
+      <button class="nicho-btn" onclick="selNicho(this)"><div class="nicho-icon">🏛️</div><div class="nicho-name">Arquitetura</div><div class="nicho-sub">escritórios e arquitetos</div></button>
+      <button class="nicho-btn" onclick="selNicho(this)"><div class="nicho-icon">👷</div><div class="nicho-name">Engenharia</div><div class="nicho-sub">construtoras e engenheiros</div></button>
+      <button class="nicho-btn" onclick="selNicho(this)"><div class="nicho-icon">🏬</div><div class="nicho-name">Loja</div><div class="nicho-sub">lojistas e comércio</div></button>
     </div>
-
     <div class="ig-row">
       <label>@ Instagram: *</label>
-      <input type="text" id="fIg" placeholder="@seuperfil" oninput="upd()">
+      <input type="text" id="fIg" placeholder="@seuperfil">
     </div>
   </div>
 
-  <!-- STEP 3: SERVIÇOS AVULSOS -->
+  <!-- STEP 3 -->
   <div class="step-card">
     <div class="step-header">
       <div class="step-num">3</div>
-      <div class="step-title">Monte como preferir</div>
-    </div>
-    <p style="font-size:13px;color:var(--gray);margin-bottom:24px;">Selecione os serviços que fazem sentido ~ o valor atualiza em tempo real.</p>
-
-    <!-- STORIES -->
-    <div class="svc-section">
-      <div class="svc-section-title">Stories</div>
-      <div class="svc-section-sub">Enviados pelo cliente para edição e postagem</div>
-      <div onclick="toggle(this,97)" data-price="97" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">Stories diário</div><div class="svc-desc">R$ 97 por dia</div></div>
-        <div class="svc-price">R$ 97<span style="font-size:12px;font-weight:400">/dia</span></div>
-      </div>
-      <div onclick="toggle(this,526)" data-price="526" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">Stories semanal</div><div class="svc-desc">10% de desconto ~ qualquer dia da semana</div></div>
-        <div class="svc-price">R$ 526<span style="font-size:12px;font-weight:400">/sem</span></div>
-      </div>
-      <div onclick="toggle(this,1497)" data-price="1497" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">Stories mensal</div><div class="svc-desc">40% de desconto ~ postagem diária por 30 dias</div></div>
-        <div class="svc-price">R$ 1.497<span style="font-size:12px;font-weight:400">/mês</span></div>
-      </div>
+      <div class="step-title">Escolha a melhor opção</div>
     </div>
 
-    <!-- DIÁRIAS VÍDEOS -->
-    <div class="svc-section">
-      <div class="svc-section-title">Diárias ~ Vídeos captados</div>
-      <div class="svc-section-sub">Captação + edição · vídeos de até 1 minuto</div>
-      <div class="svc-hint"><strong>Conteúdos sugestivos:</strong> depoimentos, entrega de projeto/obra, feedbacks de clientes, diário de obra, institucionais.</div>
-      <div onclick="toggle(this,420)" data-price="420" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">1 hora ~ até 1 vídeo</div><div class="svc-desc">vídeo de até 1 minuto</div></div>
-        <div class="svc-price">R$ 420</div>
+    <!-- AVULSO -->
+    <div class="opcao-principal" id="op-avulso">
+      <div class="opcao-header" onclick="selOpcao('avulso')">
+        <div class="radio-outer"><div class="radio-inner"></div></div>
+        <div><div class="opcao-label">Contratação avulsa / valores fixos</div><div class="opcao-sub-label">serviços pontuais com preço definido</div></div>
       </div>
-      <div onclick="toggle(this,517)" data-price="517" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">2 horas ~ até 2 vídeos</div><div class="svc-desc">vídeos de até 1 minuto cada</div></div>
-        <div class="svc-price">R$ 517</div>
-      </div>
-      <div onclick="toggle(this,599)" data-price="599" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">3 horas ~ até 3 vídeos</div><div class="svc-desc">vídeos de até 1 minuto cada</div></div>
-        <div class="svc-price">R$ 599</div>
-      </div>
-    </div>
+      <div class="sub-itens" id="sub-avulso">
 
-    <!-- DIÁRIAS COBERTURA -->
-    <div class="svc-section">
-      <div class="svc-section-title">Diárias ~ Cobertura</div>
-      <div class="svc-section-sub">Vídeos de até 30 segundos cada</div>
-      <div class="svc-hint"><strong>Conteúdos sugestivos:</strong> stories, backstage de obra/projeto/ensaio, rotina, evento.</div>
-      <div onclick="toggle(this,390)" data-price="390" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">1 hora ~ até 2 vídeos</div><div class="svc-desc">vídeos de até 30 segundos cada</div></div>
-        <div class="svc-price">R$ 390</div>
-      </div>
-      <div onclick="toggle(this,487)" data-price="487" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">2 horas ~ até 5 vídeos</div><div class="svc-desc">vídeos de até 30 segundos cada</div></div>
-        <div class="svc-price">R$ 487</div>
-      </div>
-      <div onclick="toggle(this,575)" data-price="575" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">3 horas ~ até 7 vídeos</div><div class="svc-desc">vídeos de até 30 segundos cada</div></div>
-        <div class="svc-price">R$ 575</div>
-      </div>
-    </div>
+        <!-- STORIES -->
+        <div class="sub-cat" id="sc-stories">
+          <div class="sub-cat-header" onclick="toggleCat('stories')">
+            <div class="check-box"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><div class="sub-cat-label">Cobertura de stories</div></div>
+          </div>
+          <div class="filhas" id="filhas-stories">
+            <div class="filha-item" onclick="selFilha(this,'stories')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">Stories diário</div><div class="filha-desc">disponível de 1 a 6 dias</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'stories')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">Stories semanal</div><div class="filha-desc">por 7 dias</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'stories')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">Stories mensal</div><div class="filha-desc">postagem diária por 30 dias</div></div></div>
+          </div>
+        </div>
 
-    <!-- ENSAIO FOTOGRÁFICO -->
-    <div class="svc-section">
-      <div class="svc-section-title">Ensaio fotográfico</div>
-      <div class="svc-section-sub">Captação + edição · Baixada Santista</div>
-      <div onclick="toggle(this,390)" data-price="390" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">1 hora ~ 20 fotos editadas</div><div class="svc-desc">1 local</div></div>
-        <div class="svc-price">R$ 390</div>
-      </div>
-      <div onclick="toggle(this,750)" data-price="750" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">2 horas ~ 30 fotos editadas</div><div class="svc-desc">até 2 locais</div></div>
-        <div class="svc-price">R$ 750</div>
+        <!-- VÍDEOS CAPTADOS -->
+        <div class="sub-cat" id="sc-videos">
+          <div class="sub-cat-header" onclick="toggleCat('videos')">
+            <div class="check-box"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><div class="sub-cat-label">Diária ~ vídeos captados</div></div>
+          </div>
+          <div class="filhas" id="filhas-videos">
+            <div class="filha-item" onclick="selFilha(this,'videos')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">1 hora ~ até 1 vídeo</div><div class="filha-desc">vídeos de até 1 minuto</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'videos')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">2 horas ~ até 2 vídeos</div><div class="filha-desc">vídeos de até 1 minuto</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'videos')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">3 horas ~ até 3 vídeos</div><div class="filha-desc">vídeos de até 1 minuto</div></div></div>
+          </div>
+        </div>
+
+        <!-- COBERTURA -->
+        <div class="sub-cat" id="sc-cobertura">
+          <div class="sub-cat-header" onclick="toggleCat('cobertura')">
+            <div class="check-box"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><div class="sub-cat-label">Diária ~ cobertura</div></div>
+          </div>
+          <div class="filhas" id="filhas-cobertura">
+            <div class="filha-item" onclick="selFilha(this,'cobertura')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">1 hora ~ até 2 vídeos</div><div class="filha-desc">vídeos de até 30 segundos</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'cobertura')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">2 horas ~ até 5 vídeos</div><div class="filha-desc">vídeos de até 30 segundos</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'cobertura')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">3 horas ~ até 7 vídeos</div><div class="filha-desc">vídeos de até 30 segundos</div></div></div>
+          </div>
+        </div>
+
+        <!-- ENSAIO -->
+        <div class="sub-cat" id="sc-ensaio">
+          <div class="sub-cat-header" onclick="toggleCat('ensaio')">
+            <div class="check-box"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><div class="sub-cat-label">Ensaio fotográfico</div></div>
+          </div>
+          <div class="filhas" id="filhas-ensaio">
+            <div class="filha-item" onclick="selFilha(this,'ensaio')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">1 hora ~ 20 fotos editadas</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'ensaio')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">2 horas ~ 30 fotos editadas</div></div></div>
+          </div>
+        </div>
+
+        <!-- EDIÇÕES -->
+        <div class="sub-cat" id="sc-edicoes">
+          <div class="sub-cat-header" onclick="toggleCat('edicoes')">
+            <div class="check-box"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><div class="sub-cat-label">Pacote de edições</div></div>
+          </div>
+          <div class="filhas" id="filhas-edicoes">
+            <div class="filha-item" onclick="selFilha(this,'edicoes')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">Até 5 vídeos</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'edicoes')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">Até 10 vídeos</div></div></div>
+            <div class="filha-item" onclick="selFilha(this,'edicoes')"><div class="filha-radio"><div class="filha-dot"></div></div><div><div class="filha-txt">Até 14 vídeos</div></div></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- PACOTE DE EDIÇÕES -->
-    <div class="svc-section">
-      <div class="svc-section-title">Pacote de edições</div>
-      <div class="svc-section-sub">Edição de vídeos enviados pelo cliente</div>
-      <div class="svc-hint"><strong>Conteúdos sugestivos:</strong> vídeos captados em obra, dia a dia, projeto, evento, viagens.<br>O Studio edita com o nosso olhar os vídeos enviados por você em boa resolução e enquadramento.</div>
-      <div onclick="toggle(this,690)" data-price="690" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">Até 5 vídeos</div><div class="svc-desc">edição profissional</div></div>
-        <div class="svc-price">R$ 690</div>
+    <!-- MENSAL -->
+    <div class="opcao-principal" id="op-mensal">
+      <div class="opcao-header" onclick="selOpcao('mensal')">
+        <div class="radio-outer"><div class="radio-inner"></div></div>
+        <div><div class="opcao-label">Contratação mensal / orçamento</div><div class="opcao-sub-label">gestão completa de marca e redes</div></div>
       </div>
-      <div onclick="toggle(this,1099)" data-price="1099" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">Até 10 vídeos</div><div class="svc-desc">edição profissional</div></div>
-        <div class="svc-price">R$ 1.099</div>
+    </div>
+
+    <!-- EVENTO -->
+    <div class="opcao-principal" id="op-evento">
+      <div class="opcao-header" onclick="selOpcao('evento')">
+        <div class="radio-outer"><div class="radio-inner"></div></div>
+        <div><div class="opcao-label">Evento / orçamento</div><div class="opcao-sub-label">cobertura e produção para eventos</div></div>
       </div>
-      <div onclick="toggle(this,1299)" data-price="1299" class="svc-item">
-        <div class="svc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="#F4EADD" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="svc-info"><div class="svc-name">Até 14 vídeos</div><div class="svc-desc">edição profissional</div></div>
-        <div class="svc-price">R$ 1.299</div>
+    </div>
+
+    <!-- REUNIÃO -->
+    <div class="opcao-principal" id="op-reuniao">
+      <div class="opcao-header" onclick="selOpcao('reuniao')">
+        <div class="radio-outer"><div class="radio-inner"></div></div>
+        <div><div class="opcao-label">Saber sobre os serviços / marcar reunião</div><div class="opcao-sub-label">converse com a nossa equipe</div></div>
       </div>
     </div>
 
   </div>
 
-
-
-  <p style="text-align:center;font-size:12px;color:var(--gray2);margin-top:24px;">Valores válidos para a Baixada Santista · Serviços iniciam após confirmação e primeiro pagamento · @studio.pulga</p>
+  <p class="page-note">Valores válidos para a Baixada Santista · Serviços iniciam após confirmação e primeiro pagamento · @studio.pulga</p>
 
 </div>
 
-<!-- BARRA FLUTUANTE -->
+<!-- BARRA -->
 <div class="barra">
   <div class="barra-left">
-    <div class="barra-label">Sua proposta</div>
-    <div class="barra-desc" id="barraDesc">nenhum serviço selecionado ainda</div>
+    <div class="barra-label">Sua seleção</div>
+    <div class="barra-desc" id="barraDesc">escolha uma opção acima para continuar</div>
   </div>
-  <div class="barra-total" id="barraTotal">R$ 0</div>
-  <a href="#" class="barra-btn" id="barraBtn" onclick="solicitar(event)">
+  <button class="barra-btn" onclick="solicitar()">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Solicitar proposta
-  </a>
+    Solicitar via WhatsApp
+  </button>
 </div>
 
 <script>
-let total = 0;
-let selected = [];
+let opcaoAtual = '';
 let regiao = 'Praia Grande';
+const cats = {};
 
 function selRegiao(el, r) {
   document.querySelectorAll('.regiao-btn').forEach(b => b.classList.remove('on'));
-  el.classList.add('on');
-  regiao = r;
+  el.classList.add('on'); regiao = r;
 }
 
 function selNicho(el) {
@@ -434,70 +332,84 @@ function selNicho(el) {
   el.classList.add('on');
 }
 
-function toggle(el, price) {
-  el.classList.toggle('on');
-  const name = el.querySelector('.svc-name').textContent;
-  if (el.classList.contains('on')) {
-    selected.push({ name, price });
-  } else {
-    selected = selected.filter(s => s.name !== name);
-  }
-  calcTotal();
-}
-
-function calcTotal() {
-  total = selected.reduce((a, s) => a + s.price, 0);
-  document.getElementById('barraTotal').textContent = 'R$ ' + total.toLocaleString('pt-BR');
-  const count = selected.length;
-  document.getElementById('barraDesc').textContent = count === 0
-    ? 'nenhum serviço selecionado ainda'
-    : count + ' serviço' + (count > 1 ? 's' : '') + ' selecionado' + (count > 1 ? 's' : '');
-}
-
-function upd() { /* atualiza proposta */ }
-
-// Scroll reveal para os cards
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, 80);
-      observer.unobserve(entry.target);
-    }
+function selOpcao(id) {
+  // fecha tudo
+  ['avulso','mensal','evento','reuniao'].forEach(o => {
+    document.getElementById('op-'+o).classList.remove('on');
   });
-}, { threshold: 0.08 });
+  const subAvulso = document.getElementById('sub-avulso');
+  subAvulso.classList.remove('open');
 
-document.querySelectorAll('.step-card').forEach(card => observer.observe(card));
+  opcaoAtual = id;
+  document.getElementById('op-'+id).classList.add('on');
+  if (id === 'avulso') subAvulso.classList.add('open');
+  upd();
+}
 
-function solicitar(e) {
-  e.preventDefault();
+function toggleCat(cat) {
+  const sc = document.getElementById('sc-'+cat);
+  const filhas = document.getElementById('filhas-'+cat);
+  const isOn = sc.classList.contains('on');
+  sc.classList.toggle('on');
+  if (!isOn) {
+    filhas.style.display = 'block';
+    cats[cat] = null;
+  } else {
+    filhas.style.display = 'none';
+    delete cats[cat];
+    filhas.querySelectorAll('.filha-item').forEach(f => f.classList.remove('on'));
+  }
+  upd();
+}
+
+function selFilha(el, cat) {
+  el.closest('.filhas').querySelectorAll('.filha-item').forEach(f => f.classList.remove('on'));
+  el.classList.add('on');
+  cats[cat] = el.querySelector('.filha-txt').textContent;
+  upd();
+}
+
+function upd() {
+  const desc = document.getElementById('barraDesc');
+  if (!opcaoAtual) { desc.textContent = 'escolha uma opção acima para continuar'; return; }
+  if (opcaoAtual === 'mensal') { desc.textContent = 'Contratação mensal ~ orçamento personalizado'; return; }
+  if (opcaoAtual === 'evento') { desc.textContent = 'Evento ~ orçamento personalizado'; return; }
+  if (opcaoAtual === 'reuniao') { desc.textContent = 'Marcar reunião com a equipe'; return; }
+
+  const sels = Object.values(cats).filter(Boolean);
+  if (sels.length === 0) desc.textContent = 'selecione os serviços desejados';
+  else desc.textContent = sels.join(' · ');
+}
+
+function solicitar() {
   const nome = document.getElementById('fNome').value || 'não informado';
   const tel = document.getElementById('fTel').value || 'não informado';
   const ig = document.getElementById('fIg').value || 'não informado';
   const nicho = document.querySelector('.nicho-btn.on .nicho-name')?.textContent || 'não selecionado';
 
-  let msg = `Olá! Gostaria de solicitar uma proposta do Studio Pulga.\n\n`;
-  msg += `*Nome:* ${nome}\n`;
-  msg += `*Telefone:* ${tel}\n`;
-  msg += `*Instagram:* ${ig}\n`;
-  msg += `*Nicho:* ${nicho}\n`;
-  msg += `*Região:* ${regiao}\n\n`;
-  msg += `*Serviços selecionados:*\n`;
+  let msg = `Olá! Gostaria de entrar em contato com o Studio Pulga.\n\n`;
+  msg += `*Nome:* ${nome}\n*Telefone:* ${tel}\n*Instagram:* ${ig}\n*Nicho:* ${nicho}\n*Região:* ${regiao}\n\n`;
 
-  if (selected.length === 0 && trafegoVal === 0) {
-    msg += `~ nenhum serviço selecionado\n`;
-  } else {
-    selected.forEach(s => {
-      msg += `• ${s.name}: R$ ${s.price.toLocaleString('pt-BR')}\n`;
-    });
+  if (opcaoAtual === 'avulso') {
+    const sels = Object.entries(cats).filter(([,v]) => v);
+    if (sels.length) { msg += `*Serviços de interesse:*\n`; sels.forEach(([,v]) => msg += `• ${v}\n`); }
+    else msg += `*Interesse:* Contratação avulsa (serviços a definir)\n`;
+  } else if (opcaoAtual === 'mensal') {
+    msg += `*Interesse:* Contratação mensal ~ gostaria de receber um orçamento\n`;
+  } else if (opcaoAtual === 'evento') {
+    msg += `*Interesse:* Cobertura de evento ~ gostaria de receber um orçamento\n`;
+  } else if (opcaoAtual === 'reuniao') {
+    msg += `*Interesse:* Conhecer melhor os serviços ~ gostaria de marcar uma reunião\n`;
   }
 
-  msg += `\n*Total: R$ ${total.toLocaleString('pt-BR')}*`;
-
-  const url = `https://wa.me/5513996057099?text=${encodeURIComponent(msg)}`;
-  window.open(url, '_blank');
+  window.open(`https://wa.me/5513996057099?text=${encodeURIComponent(msg)}`, '_blank');
 }
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.step-card').forEach(c => obs.observe(c));
 </script>
 </body>
 </html>
