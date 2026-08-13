@@ -38,18 +38,19 @@ body {
   position:fixed; inset:0; z-index:0;
   pointer-events:none; overflow:hidden;
   display:flex; flex-direction:column;
-  justify-content:center;
-  gap:0;
+  justify-content:flex-start;
+  padding-top:0;
 }
 .wm-row {
-  display:flex; white-space:nowrap;
+  display:flex; white-space:nowrap; flex-shrink:0;
   font-family:'League Spartan',sans-serif;
-  font-weight:900; font-size:clamp(48px,8vw,96px);
-  letter-spacing:-0.02em; line-height:1.1;
-  color:rgba(110,44,20,0.055);
-  user-select:none;
+  font-weight:900; font-size:clamp(36px,7vw,88px);
+  letter-spacing:-0.02em; line-height:1.15;
+  color:rgba(110,44,20,0.06);
+  user-select:none; animation:wmscroll 0s linear infinite;
 }
-.wm-row:nth-child(even) { transform:translateX(-120px); }
+.wm-row span { padding-right:60px; }
+.wm-row:nth-child(even) { transform:translateX(-140px); }
 .page { position:relative; z-index:1; }
 
 /* ── NAV ── */
@@ -382,14 +383,26 @@ body {
 <body>
 
 <div class="watermark" aria-hidden="true">
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
-  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp;</div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
+  <div class="wm-row">STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; STUDIO PULGA &nbsp;&nbsp; </div>
 </div>
 <nav class="nav">
   <a href="/index.html" class="nav-logo">STUDIO PULGA</a>
@@ -417,7 +430,7 @@ body {
       </div>
       <div class="field">
         <label>Telefone / WhatsApp *</label>
-        <input type="tel" id="fTel" placeholder="(13) 99999-9999" autocomplete="tel">
+        <input type="tel" id="fTel" placeholder="(13) 99999-9999" autocomplete="tel" maxlength="15" oninput="fmtTel(this)" onblur="validaTel(this)">
       </div>
     </div>
     <div class="field">
@@ -667,6 +680,32 @@ let opcaoAtual = '';
 let regiao = 'Praia Grande';
 const cats = {};
 
+function fmtTel(el) {
+  let v = el.value.replace(/\D/g,'');
+  if (v.length > 11) v = v.slice(0,11);
+  if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+  if (v.length > 10) v = v.slice(0,10) + '-' + v.slice(10);
+  el.value = v;
+  el.style.borderColor = '';
+  el.nextElementSibling && el.nextElementSibling.remove();
+}
+
+function validaTel(el) {
+  const digits = el.value.replace(/\D/g,'');
+  const err = el.parentElement.querySelector('.tel-err');
+  if (err) err.remove();
+  if (digits.length > 0 && digits.length !== 11) {
+    el.style.borderColor = '#c0392b';
+    const msg = document.createElement('span');
+    msg.className = 'tel-err';
+    msg.style.cssText = 'font-size:11px;color:#c0392b;margin-top:5px;display:block;font-family:Inter,sans-serif;';
+    msg.textContent = 'Número incompleto — informe DDD + 9 dígitos (11 no total)';
+    el.parentElement.appendChild(msg);
+  } else {
+    el.style.borderColor = '';
+  }
+}
+
 function selRegiao(el, r) {
   document.querySelectorAll('.regiao-btn').forEach(b => b.classList.remove('on'));
   el.classList.add('on');
@@ -723,6 +762,13 @@ function upd() {
 }
 
 function solicitar() {
+  const telEl = document.getElementById('fTel');
+  const digits = telEl.value.replace(/\D/g,'');
+  if (digits.length > 0 && digits.length !== 11) {
+    validaTel(telEl);
+    telEl.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
   const nome = document.getElementById('fNome').value || 'não informado';
   const tel = document.getElementById('fTel').value || 'não informado';
   const ig = document.getElementById('fIg').value || 'não informado';
