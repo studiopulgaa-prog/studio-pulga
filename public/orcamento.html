@@ -392,6 +392,37 @@ a,button,.regiao-btn,.nicho-btn,.opcao-header,.sub-cat-header,.filha-item { curs
 .page-transition-overlay { position:fixed;inset:0;z-index:9000;background:#6E2C14;transform:translateY(101%);transition:transform 0.5s cubic-bezier(0.76,0,0.24,1);pointer-events:none;will-change:transform; }
 .page-transition-overlay.active { transform:translateY(0); }
 
+
+/* ── CALENDÁRIO STORIES ── */
+.cal-wrap { margin-top: 14px; animation: slideDown 0.3s cubic-bezier(0.16,1,0.3,1); }
+.cal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.cal-title { font-family:'League Spartan',sans-serif; font-weight:700; font-size:15px; color:var(--br); }
+.cal-nav { display:flex; gap:6px; }
+.cal-nav button {
+  width:30px; height:30px; border-radius:8px;
+  border:1px solid var(--border); background:transparent;
+  color:var(--br); font-size:16px; cursor:none;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.cal-nav button:hover { border-color:var(--br); background:rgba(110,44,20,0.06); }
+.cal-days-hdr { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:6px; }
+.cal-day-lbl { text-align:center; font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray2); padding:3px 0; }
+.cal-days { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+.cal-day {
+  aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+  border-radius:8px; font-size:12px; font-weight:500; cursor:none;
+  border:1.5px solid transparent; color:var(--br); transition:all 0.18s;
+  background:rgba(244,234,221,0.5);
+}
+.cal-day:not(.empty):not(.past):hover { border-color:var(--br); background:rgba(110,44,20,0.06); }
+.cal-day.sel { background:var(--br) !important; color:#F4EADD !important; border-color:var(--br) !important; font-weight:700; }
+.cal-day.range { background:rgba(110,44,20,0.12) !important; border-color:rgba(110,44,20,0.2) !important; }
+.cal-day.range-start, .cal-day.range-end { background:var(--br) !important; color:#F4EADD !important; border-color:var(--br) !important; }
+.cal-day.empty,.cal-day.past { opacity:0.22; pointer-events:none; cursor:default; }
+.cal-info { margin-top:12px; font-size:12px; color:var(--gray); text-align:center; line-height:1.6; min-height:32px; }
+.cal-info strong { color:var(--br); font-weight:600; }
+
 </style>
 </head>
 <body>
@@ -518,17 +549,34 @@ a,button,.regiao-btn,.nicho-btn,.opcao-header,.sub-cat-header,.filha-item { curs
             <div class="sub-cat-label">Cobertura de stories</div>
           </div>
           <div class="filhas" id="filhas-stories">
-            <div class="filha-item" onclick="selFilha(this,'stories')">
+            <div class="filha-item" id="fi-dia" onclick="selStoriesTipo('dia',this)">
               <div class="filha-radio"><div class="filha-dot"></div></div>
-              <div><div class="filha-txt">Stories diário</div><div class="filha-desc">disponível de 1 a 6 dias</div></div>
+              <div><div class="filha-txt">Stories diário</div><div class="filha-desc">escolha 1 a 6 dias no calendário</div></div>
             </div>
-            <div class="filha-item" onclick="selFilha(this,'stories')">
+            <div class="filha-item" id="fi-semana" onclick="selStoriesTipo('semana',this)">
               <div class="filha-radio"><div class="filha-dot"></div></div>
-              <div><div class="filha-txt">Stories semanal</div><div class="filha-desc">por 7 dias</div></div>
+              <div><div class="filha-txt">Stories semanal</div><div class="filha-desc">7 dias corridos — escolha o início</div></div>
             </div>
-            <div class="filha-item" onclick="selFilha(this,'stories')">
+            <div class="filha-item" id="fi-mes" onclick="selStoriesTipo('mes',this)">
               <div class="filha-radio"><div class="filha-dot"></div></div>
-              <div><div class="filha-txt">Stories mensal</div><div class="filha-desc">postagem diária por 30 dias</div></div>
+              <div><div class="filha-txt">Stories mensal</div><div class="filha-desc">30 dias — escolha a data de início</div></div>
+            </div>
+            <div class="cal-wrap" id="calWrap" style="display:none">
+              <div class="cal-header">
+                <div class="cal-title" id="calTitle">agosto 2026</div>
+                <div class="cal-nav">
+                  <button onclick="calNav(-1)">‹</button>
+                  <button onclick="calNav(1)">›</button>
+                </div>
+              </div>
+              <div class="cal-days-hdr">
+                <div class="cal-day-lbl">dom</div><div class="cal-day-lbl">seg</div>
+                <div class="cal-day-lbl">ter</div><div class="cal-day-lbl">qua</div>
+                <div class="cal-day-lbl">qui</div><div class="cal-day-lbl">sex</div>
+                <div class="cal-day-lbl">sáb</div>
+              </div>
+              <div class="cal-days" id="calDays"></div>
+              <div class="cal-info" id="calInfo">Selecione uma data no calendário</div>
             </div>
           </div>
         </div>
@@ -720,6 +768,115 @@ function validaTel(el) {
   }
 }
 
+
+// ── CALENDÁRIO STORIES ──
+let calDate = new Date();
+let calTipo = null;
+let calSel = [];
+
+function selStoriesTipo(tipo, el) {
+  document.querySelectorAll('#filhas-stories .filha-item').forEach(f => f.classList.remove('on'));
+  el.classList.add('on');
+  calTipo = tipo;
+  calSel = [];
+  document.getElementById('calWrap').style.display = 'block';
+  renderCal();
+  cats['stories'] = null;
+  upd();
+}
+
+function calNav(dir) {
+  calDate = new Date(calDate.getFullYear(), calDate.getMonth() + dir, 1);
+  renderCal();
+}
+
+function renderCal() {
+  const months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const y = calDate.getFullYear(), m = calDate.getMonth();
+  document.getElementById('calTitle').textContent = months[m] + ' ' + y;
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const grid = document.getElementById('calDays');
+  grid.innerHTML = '';
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(y, m, d);
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+    if (date < today) {
+      el.classList.add('past');
+    } else {
+      el.addEventListener('click', () => pickDay(date, el));
+    }
+    // highlight range/sel
+    const ts = date.getTime();
+    if (calTipo === 'dia') {
+      if (calSel.some(s => s.getTime() === ts)) el.classList.add('sel');
+    } else if (calTipo === 'semana' || calTipo === 'mes') {
+      if (calSel.length === 1) {
+        const start = calSel[0].getTime();
+        const days = calTipo === 'semana' ? 7 : 30;
+        const end = new Date(calSel[0]);
+        end.setDate(end.getDate() + days - 1);
+        const endTs = end.getTime();
+        if (ts === start) el.classList.add('range-start');
+        else if (ts === endTs) el.classList.add('range-end');
+        else if (ts > start && ts < endTs) el.classList.add('range');
+      }
+    }
+    grid.appendChild(el);
+  }
+  updateCalInfo();
+}
+
+function pickDay(date, el) {
+  if (calTipo === 'dia') {
+    const ts = date.getTime();
+    const idx = calSel.findIndex(s => s.getTime() === ts);
+    if (idx >= 0) calSel.splice(idx, 1);
+    else if (calSel.length < 6) calSel.push(date);
+  } else {
+    calSel = [date];
+  }
+  renderCal();
+
+  // update cats
+  const fmt = (d) => d.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'});
+  if (calTipo === 'dia' && calSel.length > 0) {
+    cats['stories'] = 'Stories diário: ' + calSel.map(fmt).join(', ');
+  } else if (calTipo === 'semana' && calSel.length === 1) {
+    const end = new Date(calSel[0]); end.setDate(end.getDate() + 6);
+    cats['stories'] = 'Stories semanal: ' + fmt(calSel[0]) + ' a ' + fmt(end);
+  } else if (calTipo === 'mes' && calSel.length === 1) {
+    const end = new Date(calSel[0]); end.setDate(end.getDate() + 29);
+    cats['stories'] = 'Stories mensal: início ' + fmt(calSel[0]);
+  }
+  upd();
+}
+
+function updateCalInfo() {
+  const info = document.getElementById('calInfo');
+  const fmt = (d) => d.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'});
+  if (calTipo === 'dia') {
+    if (calSel.length === 0) info.innerHTML = 'Clique nos dias desejados <strong>(máx. 6)</strong>';
+    else info.innerHTML = '<strong>' + calSel.length + ' dia(s)</strong> selecionado(s): ' + calSel.map(fmt).join(', ');
+  } else if (calTipo === 'semana') {
+    if (calSel.length === 0) info.innerHTML = 'Clique na data de <strong>início da semana</strong>';
+    else { const end = new Date(calSel[0]); end.setDate(end.getDate()+6); info.innerHTML = '<strong>7 dias:</strong> ' + fmt(calSel[0]) + ' até ' + fmt(end); }
+  } else if (calTipo === 'mes') {
+    if (calSel.length === 0) info.innerHTML = 'Clique na data de <strong>início do mês</strong>';
+    else { const end = new Date(calSel[0]); end.setDate(end.getDate()+29); info.innerHTML = '<strong>30 dias:</strong> ' + fmt(calSel[0]) + ' até ' + fmt(end); }
+  }
+}
+
 function selRegiao(el, r) {
   document.querySelectorAll('.regiao-btn').forEach(b => b.classList.remove('on'));
   el.classList.add('on');
@@ -759,6 +916,7 @@ function toggleCat(cat) {
 }
 
 function selFilha(el, cat) {
+  if (cat === 'stories') return;
   el.closest('.filhas').querySelectorAll('.filha-item').forEach(f => f.classList.remove('on'));
   el.classList.add('on');
   cats[cat] = el.querySelector('.filha-txt').textContent;
