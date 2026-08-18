@@ -50,7 +50,10 @@ body {
   user-select:none; animation:wmscroll 0s linear infinite;
 }
 .wm-row span { padding-right:60px; }
-.wm-row:nth-child(even) { transform:translateX(-140px); }
+.wm-row:nth-child(odd) { animation: wmOdd 18s linear infinite; }
+.wm-row:nth-child(even) { animation: wmEven 22s linear infinite; }
+@keyframes wmOdd { from{transform:translateX(0);} to{transform:translateX(-200px);} }
+@keyframes wmEven { from{transform:translateX(-140px);} to{transform:translateX(60px);} }
 .page { position:relative; z-index:1; }
 
 /* ── NAV ── */
@@ -381,14 +384,13 @@ body {
 
 /* ── CURSOR ── */
 body { cursor: none; }
-.cursor-ball { position:fixed;top:0;left:0;width:10px;height:10px;background:#6E2C14;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.25s,height 0.25s,background 0.25s; }
+.cursor-ball { display:none; }
 .cursor-ring { position:fixed;top:0;left:0;width:36px;height:36px;border:1.5px solid rgba(110,44,20,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s,background 0.3s; }
 .cursor-ball.hover { width:6px;height:6px;background:#F4EADD; }
 .cursor-ring.hover { width:52px;height:52px;border-color:#6E2C14;background:rgba(110,44,20,0.06); }
 a,button,.regiao-btn,.nicho-btn,.opcao-header,.sub-cat-header,.filha-item { cursor:none; }
-.page-transition-overlay { position:fixed;inset:0;z-index:9000;background:#6E2C14;transform:translateY(100%);transition:transform 0.55s cubic-bezier(0.76,0,0.24,1);pointer-events:none; }
-.page-transition-overlay.entering { transform:translateY(0); }
-.page-transition-overlay.leaving { transform:translateY(-100%); }
+.page-transition-overlay { position:fixed;inset:0;z-index:9000;background:#6E2C14;transform:translateY(101%);transition:transform 0.5s cubic-bezier(0.76,0,0.24,1);pointer-events:none;will-change:transform; }
+.page-transition-overlay.active { transform:translateY(0); }
 
 </style>
 </head>
@@ -835,9 +837,9 @@ const overlay=document.getElementById('ptOverlay');
 document.querySelectorAll('a[href]').forEach(link=>{
   const href=link.getAttribute('href');
   if(!href||href.startsWith('#')||href.startsWith('http')||link.target==='_blank') return;
-  link.addEventListener('click',e=>{e.preventDefault();overlay.classList.add('entering');setTimeout(()=>{window.location.href=href;},520);});
+  link.addEventListener('click',e=>{e.preventDefault();overlay.classList.add('active');setTimeout(()=>{window.location.href=href;},480);});
 });
-window.addEventListener('pageshow',()=>{overlay.classList.remove('entering');overlay.classList.add('leaving');setTimeout(()=>overlay.classList.remove('leaving'),600);});
+window.addEventListener('pageshow',()=>{overlay.classList.remove('active');});
 </script>
 
 </body>

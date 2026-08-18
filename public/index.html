@@ -213,12 +213,12 @@ a, button, .dock-cta, .btn-primary, .btn-secondary, .filter-btn, .tab, .nicho-bt
 .page-transition-overlay {
   position: fixed; inset: 0; z-index: 9000;
   background: #6E2C14;
-  transform: translateY(100%);
-  transition: transform 0.55s cubic-bezier(0.76,0,0.24,1);
+  transform: translateY(101%);
+  transition: transform 0.5s cubic-bezier(0.76,0,0.24,1);
   pointer-events: none;
+  will-change: transform;
 }
-.page-transition-overlay.entering { transform: translateY(0); }
-.page-transition-overlay.leaving { transform: translateY(-100%); }
+.page-transition-overlay.active { transform: translateY(0); }
 
 /* ── SCROLL REVEAL APRIMORADO ── */
 .reveal {
@@ -260,7 +260,6 @@ a, button, .dock-cta, .btn-primary, .btn-secondary, .filter-btn, .tab, .nicho-bt
   <div class="hero-bg"></div>
   <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-badge"><div class="badge-dot"></div>Studio de Marketing — Litoral SP</div>
       <h1 class="hero-title"><span>criamos,</span>STUDIO<br>PULGA</h1>
       <p class="hero-sub">Gestão de marca, produção de conteúdo e identidade visual para quem quer presença real nas redes.</p>
       <div class="hero-btns">
@@ -412,7 +411,7 @@ a, button, .dock-cta, .btn-primary, .btn-secondary, .filter-btn, .tab, .nicho-bt
   <div class="footer-inner">
     <div>
       <div class="footer-logo">STUDIO PULGA</div>
-      <div class="footer-sub">Studio de Marketing · Praia Grande — SP</div>
+      
     </div>
     <div class="footer-col">
       <h4>Navegar</h4>
@@ -501,15 +500,13 @@ document.querySelectorAll('a[href]').forEach(link => {
   if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel') || link.target === '_blank') return;
   link.addEventListener('click', e => {
     e.preventDefault();
-    overlay.classList.add('entering');
-    setTimeout(() => { window.location.href = href; }, 520);
+    overlay.classList.add('active');
+    setTimeout(() => { window.location.href = href; }, 480);
   });
 });
 
 window.addEventListener('pageshow', () => {
-  overlay.classList.remove('entering');
-  overlay.classList.add('leaving');
-  setTimeout(() => overlay.classList.remove('leaving'), 600);
+  overlay.classList.remove('active');
 });
 
 // ── SCROLL REVEAL ESCALONADO ──
