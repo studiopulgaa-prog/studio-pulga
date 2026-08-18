@@ -242,6 +242,13 @@ a, button, .dock-cta, .btn-primary, .btn-secondary, .filter-btn, .tab, .nicho-bt
 .equipe-foto img { transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.3s; }
 .equipe-foto:hover img { transform: scale(1.04); filter: none; }
 
+
+/* ── CURSOR: oculto em touch/mobile ── */
+@media (hover: none), (pointer: coarse) {
+  .cursor-ball, .cursor-ring { display: none !important; }
+  body, a, button { cursor: auto !important; }
+}
+
 </style>
 </head>
 <body>

@@ -413,6 +413,13 @@ a,button,.regiao-btn,.nicho-btn,.opcao-header,.sub-cat-header,.filha-item { curs
 .cal-info { margin-top:10px; font-size:11px; color:var(--gray); text-align:center; line-height:1.6; min-height:28px; }
 .cal-info strong { color:var(--br); font-weight:600; }
 
+
+/* ── CURSOR: oculto em touch/mobile ── */
+@media (hover: none), (pointer: coarse) {
+  .cursor-ball, .cursor-ring { display: none !important; }
+  body, a, button { cursor: auto !important; }
+}
+
 </style>
 </head>
 <body>
