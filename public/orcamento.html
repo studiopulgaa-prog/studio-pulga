@@ -392,6 +392,27 @@ a,button,.regiao-btn,.nicho-btn,.opcao-header,.sub-cat-header,.filha-item { curs
 .page-transition-overlay { position:fixed;inset:0;z-index:9000;background:#6E2C14;transform:translateY(101%);transition:transform 0.5s cubic-bezier(0.76,0,0.24,1);pointer-events:none;will-change:transform; }
 .page-transition-overlay.active { transform:translateY(0); }
 
+
+/* ── CALENDÁRIO STORIES ── */
+.cal-wrap { margin-top:14px; animation:slideDown 0.3s cubic-bezier(0.16,1,0.3,1); border:1.5px solid var(--border); border-radius:14px; padding:16px; background:rgba(244,234,221,0.4); }
+@keyframes slideDown { from{opacity:0;transform:translateY(-8px);} to{opacity:1;transform:translateY(0);} }
+.cal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.cal-title { font-family:'League Spartan',sans-serif; font-weight:700; font-size:14px; color:var(--br); }
+.cal-nav { display:flex; gap:6px; }
+.cal-nav button { width:28px; height:28px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--br); font-size:15px; cursor:none; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.cal-nav button:hover { border-color:var(--br); background:rgba(110,44,20,0.06); }
+.cal-days-hdr { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:4px; }
+.cal-day-lbl { text-align:center; font-size:9px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray2); padding:2px 0; }
+.cal-days { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+.cal-day { aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:11px; font-weight:500; cursor:none; border:1.5px solid transparent; color:var(--br); transition:all 0.18s; background:rgba(244,234,221,0.5); }
+.cal-day:not(.empty):not(.past):hover { border-color:var(--br); background:rgba(110,44,20,0.06); }
+.cal-day.sel { background:var(--br) !important; color:#F4EADD !important; border-color:var(--br) !important; font-weight:700; }
+.cal-day.range { background:rgba(110,44,20,0.10) !important; border-color:rgba(110,44,20,0.18) !important; }
+.cal-day.range-start,.cal-day.range-end { background:var(--br) !important; color:#F4EADD !important; border-color:var(--br) !important; font-weight:700; }
+.cal-day.empty,.cal-day.past { opacity:0.22; pointer-events:none; }
+.cal-info { margin-top:10px; font-size:11px; color:var(--gray); text-align:center; line-height:1.6; min-height:28px; }
+.cal-info strong { color:var(--br); font-weight:600; }
+
 </style>
 </head>
 <body>
@@ -518,17 +539,31 @@ a,button,.regiao-btn,.nicho-btn,.opcao-header,.sub-cat-header,.filha-item { curs
             <div class="sub-cat-label">Cobertura de stories</div>
           </div>
           <div class="filhas" id="filhas-stories">
-            <div class="filha-item" onclick="selFilha(this,'stories')">
+            <div class="filha-item" id="fi-dia" onclick="selSTipo('dia',this)">
               <div class="filha-radio"><div class="filha-dot"></div></div>
-              <div><div class="filha-txt">Stories diário</div><div class="filha-desc">disponível de 1 a 6 dias</div></div>
+              <div><div class="filha-txt">Stories diário</div><div class="filha-desc">escolha 1 a 6 dias no calendário</div></div>
             </div>
-            <div class="filha-item" onclick="selFilha(this,'stories')">
+            <div class="filha-item" id="fi-semana" onclick="selSTipo('semana',this)">
               <div class="filha-radio"><div class="filha-dot"></div></div>
-              <div><div class="filha-txt">Stories semanal</div><div class="filha-desc">por 7 dias</div></div>
+              <div><div class="filha-txt">Stories semanal</div><div class="filha-desc">7 dias — escolha o início</div></div>
             </div>
-            <div class="filha-item" onclick="selFilha(this,'stories')">
+            <div class="filha-item" id="fi-mes" onclick="selSTipo('mes',this)">
               <div class="filha-radio"><div class="filha-dot"></div></div>
-              <div><div class="filha-txt">Stories mensal</div><div class="filha-desc">postagem diária por 30 dias</div></div>
+              <div><div class="filha-txt">Stories mensal</div><div class="filha-desc">30 dias — escolha a data de início</div></div>
+            </div>
+            <div class="cal-wrap" id="calWrap" style="display:none">
+              <div class="cal-header">
+                <div class="cal-title" id="calTitle"></div>
+                <div class="cal-nav">
+                  <button onclick="calNav(-1)">‹</button>
+                  <button onclick="calNav(1)">›</button>
+                </div>
+              </div>
+              <div class="cal-days-hdr">
+                <div class="cal-day-lbl">dom</div><div class="cal-day-lbl">seg</div><div class="cal-day-lbl">ter</div><div class="cal-day-lbl">qua</div><div class="cal-day-lbl">qui</div><div class="cal-day-lbl">sex</div><div class="cal-day-lbl">sáb</div>
+              </div>
+              <div class="cal-days" id="calDays"></div>
+              <div class="cal-info" id="calInfo">Selecione uma data</div>
             </div>
           </div>
         </div>
@@ -720,6 +755,78 @@ function validaTel(el) {
   }
 }
 
+
+// ── CALENDÁRIO STORIES ──
+var calDate = new Date(), calTipo = null, calSel = [];
+var months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+function selSTipo(tipo, el) {
+  document.querySelectorAll('#filhas-stories .filha-item').forEach(function(f){f.classList.remove('on');});
+  el.classList.add('on');
+  calTipo = tipo; calSel = [];
+  document.getElementById('calWrap').style.display = 'block';
+  renderCal();
+  cats['stories'] = null; upd();
+}
+
+function calNav(dir) {
+  calDate = new Date(calDate.getFullYear(), calDate.getMonth()+dir, 1);
+  renderCal();
+}
+
+function renderCal() {
+  var y=calDate.getFullYear(), m=calDate.getMonth();
+  document.getElementById('calTitle').textContent = months[m]+' '+y;
+  var firstDay=new Date(y,m,1).getDay(), daysInMonth=new Date(y,m+1,0).getDate();
+  var today=new Date(); today.setHours(0,0,0,0);
+  var grid=document.getElementById('calDays'); grid.innerHTML='';
+  for(var i=0;i<firstDay;i++){var e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
+  for(var d=1;d<=daysInMonth;d++){
+    var date=new Date(y,m,d), el=document.createElement('div');
+    el.className='cal-day'; el.textContent=d;
+    if(date<today){el.classList.add('past');}
+    else{(function(dt,elem){elem.addEventListener('click',function(){pickDay(dt,elem);});})(date,el);}
+    var ts=date.getTime();
+    if(calTipo==='dia'){if(calSel.some(function(s){return s.getTime()===ts;})){el.classList.add('sel');}}
+    else if(calSel.length===1){
+      var start=calSel[0].getTime(), days=calTipo==='semana'?7:30;
+      var end=new Date(calSel[0]); end.setDate(end.getDate()+days-1); var endTs=end.getTime();
+      if(ts===start){el.classList.add('range-start');}
+      else if(ts===endTs){el.classList.add('range-end');}
+      else if(ts>start&&ts<endTs){el.classList.add('range');}
+    }
+    grid.appendChild(el);
+  }
+  updateCalInfo();
+}
+
+function fmt(d){return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});}
+
+function pickDay(date,el){
+  if(calTipo==='dia'){
+    var ts=date.getTime(), idx=calSel.findIndex(function(s){return s.getTime()===ts;});
+    if(idx>=0){calSel.splice(idx,1);}else if(calSel.length<6){calSel.push(date);}
+  }else{calSel=[date];}
+  renderCal();
+  if(calTipo==='dia'&&calSel.length>0){cats['stories']='Stories diário: '+calSel.map(fmt).join(', ');}
+  else if(calTipo==='semana'&&calSel.length===1){var e=new Date(calSel[0]);e.setDate(e.getDate()+6);cats['stories']='Stories semanal: '+fmt(calSel[0])+' a '+fmt(e);}
+  else if(calTipo==='mes'&&calSel.length===1){var e2=new Date(calSel[0]);e2.setDate(e2.getDate()+29);cats['stories']='Stories mensal: início '+fmt(calSel[0]);}
+  upd();
+}
+
+function updateCalInfo(){
+  var info=document.getElementById('calInfo');
+  if(calTipo==='dia'){
+    info.innerHTML=calSel.length===0?'Clique nos dias desejados <strong>(máx. 6)</strong>':'<strong>'+calSel.length+' dia(s):</strong> '+calSel.map(fmt).join(', ');
+  }else if(calTipo==='semana'){
+    if(calSel.length===0){info.innerHTML='Clique na data de <strong>início</strong>';}
+    else{var e=new Date(calSel[0]);e.setDate(e.getDate()+6);info.innerHTML='<strong>7 dias:</strong> '+fmt(calSel[0])+' até '+fmt(e);}
+  }else if(calTipo==='mes'){
+    if(calSel.length===0){info.innerHTML='Clique na data de <strong>início</strong>';}
+    else{var e2=new Date(calSel[0]);e2.setDate(e2.getDate()+29);info.innerHTML='<strong>30 dias:</strong> '+fmt(calSel[0])+' até '+fmt(e2);}
+  }
+}
+
 function selRegiao(el, r) {
   document.querySelectorAll('.regiao-btn').forEach(b => b.classList.remove('on'));
   el.classList.add('on');
@@ -759,6 +866,7 @@ function toggleCat(cat) {
 }
 
 function selFilha(el, cat) {
+  if (cat === 'stories') return;
   el.closest('.filhas').querySelectorAll('.filha-item').forEach(f => f.classList.remove('on'));
   el.classList.add('on');
   cats[cat] = el.querySelector('.filha-txt').textContent;
