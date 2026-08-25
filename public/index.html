@@ -335,14 +335,32 @@ a, button, .dock-cta, .btn-primary, .btn-secondary, .filter-btn, .tab, .nicho-bt
         <p class="sobre-desc">Cada entrega nasce de um olhar criterioso. Não fazemos conteúdo pelo volume — fazemos pelo impacto. Sua marca, nossa obsessão.</p>
       </div>
       <div class="sobre-imgs" style="display:block;">
-        <div style="border-radius:20px;overflow:hidden;width:100%;aspect-ratio:9/16;max-height:560px;">
-          <video
+        <div style="border-radius:20px;overflow:hidden;width:100%;aspect-ratio:9/16;max-height:560px;position:relative;">
+          <video id="sobreVideo"
             src="/video_pulga.mp4"
             style="width:100%;height:100%;object-fit:cover;border-radius:20px;"
             autoplay muted loop playsinline>
           </video>
+          <button id="muteBtn" onclick="toggleMute()" style="
+            position:absolute;bottom:16px;right:16px;
+            background:rgba(0,0,0,0.55);
+            border:none;border-radius:50%;
+            width:40px;height:40px;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:18px;color:#fff;
+            backdrop-filter:blur(4px);
+            transition:all 0.2s;
+          ">🔇</button>
         </div>
       </div>
+      <script>
+        function toggleMute() {
+          var v = document.getElementById("sobreVideo");
+          var btn = document.getElementById("muteBtn");
+          v.muted = !v.muted;
+          btn.textContent = v.muted ? "🔇" : "🔊";
+        }
+      </script>
     </div>
   </div>
 </section>
