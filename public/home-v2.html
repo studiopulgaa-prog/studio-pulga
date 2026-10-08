@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Pulga — Studio de Marketing</title>
+<meta name="description" content="Gestão de marca, produção de conteúdo e identidade visual para arquitetura, design de interiores e engenharia.">
+<meta name="theme-color" content="#F4EADD">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/v2/port3.webp">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* ═════════════ TOKENS (mesma identidade da v1) ═════════════ */
+:root {
+  --bg: #F4EADD;
+  --bg-dark: #EAD8C5;
+  --bg-darker: #D9C4AC;
+  --brown: #6E2C14;
+  --brown-dark: #5A2210;
+  --cream: #F4EADD;
+  --border: rgba(110,44,20,0.15);
+  --gray: rgba(110,44,20,0.55);
+  --gray2: rgba(110,44,20,0.35);
+  --glow: rgba(110,44,20,0.08);
+  --card: rgba(110,44,20,0.06);
+  --ease: cubic-bezier(0.16,1,0.3,1);
+  --ease-io: cubic-bezier(0.76,0,0.24,1);
+  --gutter: clamp(20px, 5vw, 60px);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+html.lenis, html.lenis body { height:auto; }
+.lenis.lenis-smooth { scroll-behavior:auto !important; }
+body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--brown); overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+img, video { display:block; max-width:100%; }
+a { color:inherit; }
+::selection { background:var(--brown); color:var(--cream); }
+.spartan { font-family:'League Spartan',sans-serif; }
+
+/* grão de filme sutil por cima de tudo — dá textura "editorial" */
+.grain {
+  position:fixed; inset:-50%; z-index:8000; pointer-events:none; opacity:0.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(6) infinite;
+}
+@keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
+
+/* ═════════════ LOADER ═════════════ */
+.loader {
+  position:fixed; inset:0; z-index:9500; background:var(--brown); color:var(--cream);
+  display:flex; flex-direction:column; justify-content:space-between; padding:var(--gutter);
+  transition:clip-path 1s var(--ease-io);
+  clip-path:inset(0 0 0 0);
+}
+html:not(.js) .loader { display:none; }
+.loader.done { clip-path:inset(0 0 100% 0); }
+.loader-top { display:flex; justify-content:space-between; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.55; }
+.loader-word { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(56px,13vw,200px); line-height:0.85; letter-spacing:-0.04em; display:flex; overflow:hidden; }
+.loader-word span { display:inline-block; transform:translateY(105%); animation:charUp 0.9s var(--ease) forwards; }
+.loader-count { font-family:'League Spartan',sans-serif; font-weight:300; font-size:clamp(28px,4vw,48px); text-align:right; font-variant-numeric:tabular-nums; }
+@keyframes charUp { to { transform:translateY(0); } }
+
+/* ═════════════ PROGRESSO DE SCROLL ═════════════ */
+.scroll-progress { position:fixed; top:0; left:0; right:0; height:2px; z-index:300; background:var(--brown); transform-origin:0 50%; transform:scaleX(0); }
+
+/* ═════════════ DOCK NAV ═════════════ */
+.dock-nav {
+  position:fixed; top:20px; left:50%; z-index:200;
+  display:flex; align-items:center; gap:2px;
+  background:rgba(244,234,221,0.78); backdrop-filter:blur(24px) saturate(1.4); -webkit-backdrop-filter:blur(24px) saturate(1.4);
+  border:1px solid var(--border); border-radius:50px; padding:8px 8px 8px 20px; white-space:nowrap;
+  box-shadow:0 8px 40px rgba(110,44,20,0.12);
+  transform:translate(-50%, -160%);
+  transition:transform 0.8s var(--ease), box-shadow 0.4s;
+}
+.is-ready .dock-nav { transform:translate(-50%, 0); }
+.is-ready .dock-nav.hide { transform:translate(-50%, -160%); }
+.dock-logo { font-family:'League Spartan',sans-serif; font-weight:900; font-size:14px; letter-spacing:-0.02em; margin-right:10px; text-decoration:none; }
+.dock-links { position:relative; display:flex; }
+.dock-pill { position:absolute; top:0; left:0; height:100%; border-radius:24px; background:var(--glow); opacity:0; transition:transform 0.5s var(--ease), width 0.5s var(--ease), opacity 0.3s; pointer-events:none; }
+.dock-link { position:relative; font-size:13px; font-weight:500; color:var(--gray); text-decoration:none; padding:8px 14px; border-radius:24px; transition:color 0.3s; }
+.dock-link.active, .dock-link:hover { color:var(--brown); }
+.dock-cta { background:var(--brown); color:var(--cream); padding:10px 20px; border-radius:24px; font-size:13px; font-weight:600; text-decoration:none; margin-left:8px; display:inline-flex; gap:6px; align-items:center; overflow:hidden; }
+.dock-cta .arrow { display:inline-block; transition:transform 0.5s var(--ease); }
+.dock-cta:hover .arrow { transform:translateX(3px) rotate(-45deg); }
+
+/* ═════════════ BOTÕES (texto rola ao hover) ═════════════ */
+.btn { position:relative; display:inline-flex; align-items:center; gap:10px; padding:16px 32px; border-radius:50px; font-size:14px; font-weight:600; text-decoration:none; overflow:hidden; isolation:isolate; will-change:transform; }
+.btn .roll { position:relative; display:inline-block; overflow:hidden; line-height:1.2; }
+.btn .roll span { display:block; transition:transform 0.6s var(--ease); }
+.btn .roll span + span { position:absolute; top:100%; left:0; }
+.btn:hover .roll span { transform:translateY(-100%); }
+.btn::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; transform:translateY(101%); transition:transform 0.6s var(--ease); }
+.btn:hover::before { transform:translateY(0); }
+.btn-primary { background:var(--brown); color:var(--cream); }
+.btn-primary::before { background:var(--brown-dark); }
+.btn-secondary { color:var(--brown); border:1.5px solid var(--border); }
+.btn-secondary::before { background:var(--brown); }
+.btn-secondary:hover { color:var(--cream); border-color:var(--brown); }
+.btn-white { background:var(--cream); color:var(--brown); padding:20px 48px; font-weight:700; }
+.btn-white::before { background:#fff; }
+
+/* ═════════════ HERO ═════════════ */
+.hero { min-height:100svh; position:relative; overflow:hidden; display:flex; align-items:center; }
+.hero-bg { position:absolute; inset:0; background:var(--bg); }
+.blob { position:absolute; border-radius:50%; filter:blur(70px); will-change:transform; }
+.blob-1 { width:62vmax; height:52vmax; left:-14vmax; top:-6vmax; background:radial-gradient(closest-side, rgba(110,44,20,0.22), transparent); }
+.blob-2 { width:40vmax; height:46vmax; right:-10vmax; bottom:-16vmax; background:radial-gradient(closest-side, rgba(110,44,20,0.14), transparent); }
+.blob-3 { width:26vmax; height:26vmax; left:40%; top:30%; background:radial-gradient(closest-side, rgba(217,196,172,0.9), transparent); }
+.hero-inner { position:relative; z-index:10; width:100%; padding:140px var(--gutter) 110px; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr); gap:40px; align-items:center; will-change:transform, opacity; }
+.hero-kicker { display:flex; align-items:baseline; gap:0.3em; font-family:'League Spartan',sans-serif; font-weight:300; font-size:clamp(28px,4.5vw,56px); color:var(--gray); margin-bottom:6px; line-height:1.1; }
+.rot { position:relative; display:inline-block; height:1.1em; overflow:hidden; vertical-align:bottom; color:var(--brown); font-weight:400; }
+.rot-word { display:block; transition:transform 0.9s var(--ease), opacity 0.9s var(--ease); }
+.rot-word:not(:first-child) { position:absolute; left:0; top:0; }
+.rot-word { transform:translateY(110%); opacity:0; }
+.rot-word.in { transform:translateY(0); opacity:1; }
+.rot-word.out { transform:translateY(-110%); opacity:0; }
+.hero-title { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(64px,12vw,172px); line-height:0.84; letter-spacing:-0.045em; margin-bottom:28px; }
+.line { display:block; overflow:hidden; padding-bottom:0.04em; }
+.line > span { display:inline-block; }
+.char { display:inline-block; transform:translateY(110%) rotate(6deg); transform-origin:0 100%; transition:transform 1.1s var(--ease); }
+.is-ready .char { transform:none; }
+.hero-sub { font-size:clamp(15px,1.6vw,18px); font-weight:300; color:var(--gray); max-width:440px; line-height:1.7; margin-bottom:40px; }
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; }
+.fade-in { opacity:0; transform:translateY(24px); transition:opacity 1s var(--ease), transform 1s var(--ease); }
+.is-ready .fade-in { opacity:1; transform:none; }
+html:not(.js) .char, html:not(.js) .fade-in { transform:none; opacity:1; }
+
+.hero-stack { position:relative; height:min(62vh,560px); }
+.float { position:absolute; border-radius:18px; overflow:hidden; box-shadow:0 30px 60px -20px rgba(90,34,16,0.35); will-change:transform; clip-path:inset(100% 0 0 0 round 18px); transition:clip-path 1.4s var(--ease); }
+.is-ready .float { clip-path:inset(0 0 0 0 round 18px); }
+.float img { width:100%; height:100%; object-fit:cover; transform:scale(1.25); transition:transform 1.8s var(--ease); }
+.is-ready .float img { transform:scale(1); }
+.float-1 { width:58%; aspect-ratio:3/4; right:4%; top:0; transition-delay:0.35s; }
+.float-1 img { transition-delay:0.35s; }
+.float-2 { width:40%; aspect-ratio:3/4; left:0; bottom:2%; transition-delay:0.5s; }
+.float-2 img { transition-delay:0.5s; }
+.float-3 { width:30%; aspect-ratio:1/1; right:0; bottom:-4%; transition-delay:0.65s; }
+.float-3 img { transition-delay:0.65s; }
+.hero-badge { position:absolute; left:18%; top:12%; z-index:3; width:118px; height:118px; animation:spin 16s linear infinite; opacity:0; transition:opacity 1s 1s; }
+.is-ready .hero-badge { opacity:1; }
+.hero-badge text { font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; letter-spacing:3.2px; fill:var(--brown); text-transform:uppercase; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.scroll-cue { position:absolute; left:50%; translate:-50% 0; bottom:28px; flex-direction:column; z-index:10; display:flex; align-items:center; gap:12px; font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray2); }
+.scroll-cue i { width:1.5px; height:44px; background:var(--border); position:relative; overflow:hidden; }
+.scroll-cue i::after { content:''; position:absolute; left:0; top:0; width:100%; height:40%; background:var(--brown); animation:cue 2s var(--ease-io) infinite; }
+@keyframes cue { from{transform:translateY(-100%)} to{transform:translateY(260%)} }
+
+/* ═════════════ BAND (palavras acendem com o scroll) ═════════════ */
+.band { background:var(--bg-dark); padding:clamp(90px,14vw,180px) var(--gutter); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.band-text { max-width:980px; margin:0 auto; font-family:'League Spartan',sans-serif; font-size:clamp(30px,5vw,64px); font-weight:700; line-height:1.1; letter-spacing:-0.025em; text-align:center; }
+.band-text .w { opacity:0.14; transition:opacity 0.4s linear; }
+.band-text .w.lit { opacity:1; }
+.band-text em { font-style:italic; font-weight:300; }
+
+/* ═════════════ TAPE (2 fileiras, reage à velocidade do scroll) ═════════════ */
+.tape-section { padding:56px 0; overflow:hidden; border-bottom:1px solid var(--border); }
+.tape-label { text-align:center; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray2); margin-bottom:28px; }
+.tape-row { overflow:hidden; padding:6px 0; }
+.tape-track { display:flex; gap:44px; width:max-content; will-change:transform; }
+.tape-name { font-family:'League Spartan',sans-serif; font-size:clamp(20px,2.4vw,30px); font-weight:700; white-space:nowrap; opacity:0.42; transition:opacity 0.3s; }
+.tape-row.alt .tape-name { font-weight:300; font-style:italic; opacity:0.3; }
+.tape-name:hover { opacity:1; }
+.tape-dot { opacity:0.25; font-size:20px; align-self:center; }
+
+/* ═════════════ BASE DE SEÇÃO ═════════════ */
+.section { padding:clamp(80px,11vw,140px) var(--gutter); max-width:1240px; margin:0 auto; }
+.section-tag { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray2); margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+.section-tag::before { content:''; width:20px; height:1.5px; background:currentColor; transform-origin:0 50%; transform:scaleX(0); transition:transform 1s var(--ease) 0.2s; }
+.in-view .section-tag::before, .section-tag.in-view::before { transform:scaleX(1); }
+.section-title { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(40px,6.4vw,88px); line-height:0.9; letter-spacing:-0.035em; margin-bottom:48px; }
+.section-title .line > span { transform:translateY(110%); transition:transform 1.1s var(--ease); }
+.section-title .line:nth-child(2) > span { transition-delay:0.08s; }
+.in-view .section-title .line > span, .section-title.in-view .line > span { transform:none; }
+.rv { opacity:0; transform:translateY(40px); transition:opacity 1s var(--ease), transform 1s var(--ease); transition-delay:var(--d,0s); }
+.rv.in-view { opacity:1; transform:none; }
+html:not(.js) .rv, html:not(.js) .section-title .line > span { opacity:1; transform:none; }
+
+/* ═════════════ SOBRE ═════════════ */
+.sobre-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,7vw,100px); align-items:center; }
+.sobre-desc { font-size:17px; font-weight:300; color:var(--gray); line-height:1.8; margin-bottom:16px; max-width:480px; }
+.sobre-points { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; }
+.chip { padding:9px 18px; border-radius:50px; background:var(--card); border:1px solid var(--border); font-size:13px; font-weight:500; }
+.video-wrap { position:relative; width:100%; max-width:420px; margin-left:auto; aspect-ratio:9/16; max-height:640px; border-radius:24px; overflow:hidden; clip-path:inset(14% 14% 14% 14% round 28px); will-change:clip-path; background:var(--bg-darker); }
+.video-wrap video { width:100%; height:100%; object-fit:cover; transform:scale(1.18); will-change:transform; }
+.mute-btn { position:absolute; bottom:18px; right:18px; z-index:2; height:44px; padding:0 16px 0 14px; border-radius:50px; border:1px solid rgba(255,255,255,0.25); background:rgba(40,16,8,0.45); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); color:#fff; font:600 12px 'Inter',sans-serif; letter-spacing:0.04em; display:flex; align-items:center; gap:10px; cursor:pointer; }
+.bars { display:flex; align-items:flex-end; gap:2px; height:14px; }
+.bars i { width:2px; height:3px; background:currentColor; border-radius:2px; transition:height 0.3s; }
+.mute-btn.on .bars i { animation:bar 0.9s ease-in-out infinite alternate; }
+.mute-btn.on .bars i:nth-child(2) { animation-delay:-0.3s; }
+.mute-btn.on .bars i:nth-child(3) { animation-delay:-0.6s; }
+.mute-btn.on .bars i:nth-child(4) { animation-delay:-0.15s; }
+@keyframes bar { from{height:3px} to{height:14px} }
+
+/* ═════════════ SERVIÇOS (lista editorial) ═════════════ */
+.svc { background:var(--bg-dark); position:relative; }
+.svc-head { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; }
+.svc-head p { max-width:340px; font-size:15px; font-weight:300; color:var(--gray); line-height:1.7; margin-bottom:48px; }
+.svc-list { border-top:1px solid var(--border); }
+.svc-row { position:relative; border-bottom:1px solid var(--border); overflow:hidden; cursor:pointer; }
+.svc-row::before { content:''; position:absolute; inset:0; background:var(--brown); transform:translateY(101%); transition:transform 0.7s var(--ease); }
+.svc-row-inner { position:relative; display:grid; grid-template-columns:70px 1fr auto; align-items:center; gap:20px; padding:30px 8px; transition:color 0.5s var(--ease), padding 0.7s var(--ease); }
+.svc-num { font-size:12px; font-weight:600; letter-spacing:0.12em; color:var(--gray2); transition:color 0.5s; }
+.svc-name { font-family:'League Spartan',sans-serif; font-weight:700; font-size:clamp(24px,3.6vw,46px); letter-spacing:-0.025em; line-height:1; }
+.svc-plus { width:44px; height:44px; border-radius:50%; border:1px solid var(--border); display:grid; place-items:center; transition:transform 0.7s var(--ease), border-color 0.5s; }
+.svc-plus::before, .svc-plus::after { content:''; grid-area:1/1; width:14px; height:1.5px; background:currentColor; }
+.svc-plus::after { transform:rotate(90deg); transition:transform 0.7s var(--ease); }
+.svc-desc { position:relative; display:grid; grid-template-rows:0fr; transition:grid-template-rows 0.7s var(--ease); }
+.svc-desc > div { overflow:hidden; }
+.svc-desc p { max-width:560px; padding:0 8px 30px 98px; font-size:15px; font-weight:300; line-height:1.75; opacity:0; transform:translateY(12px); transition:opacity 0.6s, transform 0.7s var(--ease); }
+.svc-row.open::before { transform:translateY(0); }
+.svc-row.open .svc-row-inner { color:var(--cream); padding-left:24px; }
+.svc-row.open .svc-num { color:rgba(244,234,221,0.5); }
+.svc-row.open .svc-plus { border-color:rgba(244,234,221,0.3); transform:rotate(180deg); }
+.svc-row.open .svc-plus::after { transform:rotate(0deg); }
+.svc-row.open .svc-desc { grid-template-rows:1fr; }
+.svc-row.open .svc-desc p { opacity:1; transform:none; color:rgba(244,234,221,0.75); transition-delay:0.1s; }
+/* prévia de imagem que segue o cursor */
+.svc-preview { position:fixed; left:0; top:0; z-index:150; width:240px; aspect-ratio:3/4; border-radius:16px; overflow:hidden; pointer-events:none; opacity:0; transform:translate(-50%,-50%) scale(0.6); transition:opacity 0.4s, scale 0.6s var(--ease); box-shadow:0 30px 60px -20px rgba(40,16,8,0.5); }
+.svc-preview.show { opacity:1; scale:1; }
+.svc-preview img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.15); transition:opacity 0.5s, transform 0.8s var(--ease); }
+.svc-preview img.cur { opacity:1; transform:none; }
+
+/* ═════════════ PORTFÓLIO (scroll horizontal fixado) ═════════════ */
+.port { position:relative; background:var(--bg); }
+.port-sticky { position:sticky; top:0; height:100vh; height:100svh; overflow:hidden; display:flex; flex-direction:column; justify-content:center; }
+.port-track { display:flex; align-items:center; gap:clamp(16px,2vw,28px); padding:0 var(--gutter); width:max-content; will-change:transform; }
+.port-intro { width:min(420px,80vw); flex-shrink:0; padding-right:40px; }
+.port-intro p { font-size:15px; font-weight:300; color:var(--gray); line-height:1.7; max-width:320px; }
+.drag-hint { margin-top:28px; display:inline-flex; align-items:center; gap:10px; font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--gray2); }
+.drag-hint svg { animation:nudge 2s var(--ease-io) infinite; }
+@keyframes nudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
+.port-item { position:relative; flex-shrink:0; height:min(68vh,620px); aspect-ratio:3/4; border-radius:18px; overflow:hidden; cursor:pointer; background:var(--bg-darker); }
+.port-item:nth-child(odd) { height:min(56vh,520px); }
+.port-item:nth-child(3n) { aspect-ratio:4/5; }
+.port-item img { position:absolute; top:0; left:-10%; width:120%; max-width:none; height:100%; object-fit:cover; will-change:transform; transition:scale 1.2s var(--ease); }
+.port-item:hover img { scale:1.05; }
+.port-item .idx { position:absolute; left:16px; bottom:14px; z-index:2; font-size:11px; font-weight:600; letter-spacing:0.14em; color:#fff; mix-blend-mode:difference; }
+.port-end { flex-shrink:0; width:min(360px,75vw); height:min(56vh,520px); border-radius:18px; background:var(--brown); color:var(--cream); display:flex; flex-direction:column; justify-content:space-between; padding:32px; text-decoration:none; position:relative; overflow:hidden; }
+.port-end strong { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(32px,3.4vw,44px); line-height:0.95; letter-spacing:-0.03em; }
+.port-end span { font-size:13px; opacity:0.7; }
+.port-end .big-arrow { font-size:56px; line-height:1; align-self:flex-end; transition:transform 0.7s var(--ease); }
+.port-end:hover .big-arrow { transform:translate(6px,-6px) rotate(-45deg); }
+.port-bar { position:absolute; left:var(--gutter); right:var(--gutter); bottom:40px; height:1.5px; background:var(--border); }
+.port-bar i { position:absolute; inset:0; background:var(--brown); transform-origin:0 50%; transform:scaleX(0); }
+.port-count { position:absolute; right:var(--gutter); bottom:54px; font-size:11px; font-weight:600; letter-spacing:0.14em; color:var(--gray2); font-variant-numeric:tabular-nums; }
+
+/* lightbox */
+.lightbox { position:fixed; inset:0; z-index:9200; display:grid; place-items:center; background:rgba(40,16,8,0); pointer-events:none; transition:background 0.6s var(--ease); }
+.lightbox.open { background:rgba(40,16,8,0.88); pointer-events:auto; }
+.lightbox img { max-width:min(92vw,900px); max-height:86vh; border-radius:16px; opacity:0; transform:scale(0.92) translateY(30px); transition:opacity 0.6s var(--ease), transform 0.8s var(--ease); }
+.lightbox.open img { opacity:1; transform:none; }
+.lb-btn { position:absolute; width:52px; height:52px; border-radius:50%; border:1px solid rgba(244,234,221,0.3); background:rgba(244,234,221,0.06); color:var(--cream); font-size:20px; cursor:pointer; opacity:0; transition:opacity 0.4s, background 0.3s; }
+.lightbox.open .lb-btn { opacity:1; }
+.lb-btn:hover { background:rgba(244,234,221,0.18); }
+.lb-close { top:24px; right:24px; }
+.lb-prev { left:24px; top:50%; translate:0 -50%; }
+.lb-next { right:24px; top:50%; translate:0 -50%; }
+.lb-count { position:absolute; bottom:28px; left:50%; translate:-50% 0; color:rgba(244,234,221,0.6); font-size:12px; letter-spacing:0.14em; font-variant-numeric:tabular-nums; }
+
+/* ═════════════ EQUIPE ═════════════ */
+.equipe { background:var(--bg-dark); }
+.equipe-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(12px,1.6vw,20px); align-items:start; }
+.equipe-foto { border-radius:18px; overflow:hidden; aspect-ratio:3/4; will-change:transform; }
+.equipe-foto:nth-child(2) { margin-top:80px; }
+.equipe-foto:nth-child(3) { margin-top:30px; }
+.equipe-foto img { width:100%; height:100%; object-fit:cover; filter:sepia(12%) saturate(85%); transition:filter 0.6s, scale 1.2s var(--ease); }
+.equipe-foto:hover img { filter:none; scale:1.05; }
+
+/* ═════════════ CTA ═════════════ */
+.cta { position:relative; background:var(--brown); color:var(--cream); padding:clamp(100px,14vw,170px) 0; overflow:hidden; text-align:center; }
+.cta-marquee { position:absolute; top:50%; left:0; translate:0 -50%; display:flex; width:max-content; pointer-events:none; will-change:transform; }
+.cta-marquee span { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(140px,22vw,320px); letter-spacing:-0.05em; line-height:1; color:transparent; -webkit-text-stroke:1.5px rgba(244,234,221,0.09); padding-right:0.3em; white-space:nowrap; }
+.cta-inner { position:relative; z-index:2; padding:0 var(--gutter); }
+.cta-title { font-family:'League Spartan',sans-serif; font-weight:900; font-size:clamp(44px,7.4vw,104px); letter-spacing:-0.035em; line-height:0.92; margin-bottom:22px; }
+.cta-sub { font-size:17px; font-weight:300; color:rgba(244,234,221,0.65); margin-bottom:44px; }
+
+/* ═════════════ FOOTER ═════════════ */
+footer { background:var(--bg-darker); padding:72px var(--gutter) 0; border-top:1px solid var(--border); overflow:hidden; }
+.footer-inner { max-width:1240px; margin:0 auto; display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:32px; }
+.footer-lead { font-family:'League Spartan',sans-serif; font-weight:700; font-size:22px; line-height:1.2; letter-spacing:-0.02em; max-width:280px; }
+.footer-col h4 { font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray2); margin-bottom:14px; }
+.footer-col a { display:block; width:fit-content; font-size:14px; color:var(--gray); text-decoration:none; margin-bottom:8px; background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat; transition:color 0.3s, background-size 0.5s var(--ease); }
+.footer-col a:hover { color:var(--brown); background-size:100% 1px; }
+.footer-mark { font-family:'League Spartan',sans-serif; font-weight:900; font-size:14.4vw; line-height:0.78; letter-spacing:-0.055em; white-space:nowrap; margin-top:64px; display:flex; justify-content:center; color:var(--brown); }
+.footer-mark span { display:inline-block; transform:translateY(60%); opacity:0; transition:transform 1.2s var(--ease), opacity 1.2s var(--ease); transition-delay:calc(var(--i) * 0.04s); }
+.footer-mark.in-view span { transform:none; opacity:1; }
+.footer-copy { max-width:1240px; margin:0 auto; padding:22px 0 96px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid var(--border); font-size:11px; color:var(--gray2); }
+
+/* ═════════════ WHATSAPP ═════════════ */
+.wa-btn { position:fixed; bottom:24px; right:24px; z-index:250; background:#25D366; color:#fff; height:52px; padding:0 20px; border-radius:50px; font-size:14px; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:9px; box-shadow:0 10px 30px -8px rgba(37,211,102,0.6); transform:translateY(140%); transition:transform 0.8s var(--ease) 0.6s; }
+.is-ready .wa-btn { transform:none; }
+
+/* tag de comparação — some ao publicar */
+.v2-tag { position:fixed; left:20px; bottom:24px; z-index:250; display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:50px; background:rgba(244,234,221,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border); font-size:12px; font-weight:600; text-decoration:none; color:var(--brown); }
+.v2-tag b { background:var(--brown); color:var(--cream); border-radius:20px; padding:2px 8px; font-size:10px; letter-spacing:0.08em; }
+
+/* ═════════════ CURSOR ═════════════ */
+.cursor { position:fixed; left:0; top:0; z-index:9999; pointer-events:none; display:none; }
+.cursor-dot { position:absolute; width:8px; height:8px; margin:-4px 0 0 -4px; border-radius:50%; background:var(--brown); transition:scale 0.3s var(--ease); }
+.cursor-ring { position:absolute; width:40px; height:40px; margin:-20px 0 0 -20px; border-radius:50%; border:1.5px solid rgba(110,44,20,0.4); display:grid; place-items:center; transition:width 0.5s var(--ease), height 0.5s var(--ease), margin 0.5s var(--ease), background 0.4s, border-color 0.4s; }
+.cursor-ring em { font-style:normal; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--cream); opacity:0; scale:0.6; transition:opacity 0.3s, scale 0.5s var(--ease); }
+.cursor.hover .cursor-ring { width:60px; height:60px; margin:-30px 0 0 -30px; background:rgba(110,44,20,0.06); border-color:var(--brown); }
+.cursor.hover .cursor-dot { scale:0.5; }
+.cursor.label .cursor-ring { width:88px; height:88px; margin:-44px 0 0 -44px; background:var(--brown); border-color:var(--brown); }
+.cursor.label .cursor-ring em { opacity:1; scale:1; }
+.cursor.label .cursor-dot, .cursor.dark .cursor-dot { scale:0; }
+.cursor.dark .cursor-ring { border-color:rgba(244,234,221,0.5); }
+@media (pointer:fine) {
+  .cursor { display:block; }
+  body, a, button, .svc-row, .port-item { cursor:none; }
+}
+
+/* ═════════════ TRANSIÇÃO DE PÁGINA ═════════════ */
+.pt { position:fixed; inset:0; z-index:9400; background:var(--brown); transform:translateY(101%); transition:transform 0.6s var(--ease-io); pointer-events:none; }
+.pt.active { transform:translateY(0); }
+
+/* ═════════════ RESPONSIVO ═════════════ */
+@media (max-width:900px) {
+  .hero-inner { grid-template-columns:1fr; padding-top:130px; padding-bottom:120px; }
+  .hero-stack { height:auto; aspect-ratio:1/0.95; max-width:520px; width:100%; }
+  .hero-badge { width:92px; height:92px; left:auto; right:44%; top:4%; }
+  .sobre-grid { grid-template-columns:1fr; }
+  .video-wrap { margin:0 auto; }
+  .dock-links { display:none; }
+  .footer-inner { grid-template-columns:1fr 1fr; }
+  .footer-lead { grid-column:1/-1; }
+  .svc-row-inner { grid-template-columns:44px 1fr auto; }
+  .svc-desc p { padding-left:72px; }
+  .svc-preview { display:none; }
+}
+@media (max-width:600px) {
+  .svc-row-inner { grid-template-columns:1fr auto; padding:24px 4px; }
+  .svc-num { display:none; }
+  .svc-head .section-title { margin-bottom:20px; }
+  .svc-head p { margin-bottom:32px; }
+  .svc-desc p { padding:0 24px 24px; }
+  .svc-plus { width:38px; height:38px; }
+  .equipe-grid { grid-template-columns:1fr; }
+  .equipe-foto, .equipe-foto:nth-child(n) { margin-top:0; aspect-ratio:4/5; }
+  .wa-btn { padding:0; width:52px; justify-content:center; }
+  .wa-btn .wa-label { display:none; }
+  .v2-tag { bottom:30px; }
+  .scroll-cue { display:none; }
+}
+/* em telas de toque o portfólio vira um carrossel nativo com snap */
+@media (max-width:900px), (pointer:coarse) {
+  .port { height:auto !important; }
+  .port-sticky { position:relative; height:auto; padding:90px 0 110px; }
+  .port-track { transform:none !important; overflow-x:auto; width:auto; scroll-snap-type:x mandatory; scroll-padding-inline:var(--gutter); scrollbar-width:none; padding-bottom:6px; }
+  .port-intro { width:72vw; padding-right:8px; }
+  .hint-desk { display:none; }
+  .hint-touch { display:inline !important; }
+  .port-track::-webkit-scrollbar { display:none; }
+  .port-item, .port-end { scroll-snap-align:center; height:62vh !important; max-height:520px; }
+  .port-intro { scroll-snap-align:start; }
+  .port-bar { bottom:56px; }
+  .port-count { bottom:70px; }
+}
+
+/* ═════════════ MOVIMENTO REDUZIDO ═════════════ */
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; transition-delay:0s !important; }
+  .grain { display:none; }
+  .loader { display:none; }
+  .video-wrap { clip-path:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- LOADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-top"><span>Studio de Marketing</span><span>Litoral · SP</span></div>
+  <div class="loader-word" id="loaderWord"></div>
+  <div class="loader-count"><span id="loaderCount">0</span>%</div>
+</div>
+
+<!-- NAV -->
+<nav class="dock-nav" id="nav">
+  <a href="#topo" class="dock-logo">STUDIO PULGA</a>
+  <div class="dock-links" id="dockLinks">
+    <span class="dock-pill" id="dockPill"></span>
+    <a href="#sobre" class="dock-link" data-sec="sobre">Studio</a>
+    <a href="#servicos" class="dock-link" data-sec="servicos">Serviços</a>
+    <a href="#portfolio" class="dock-link" data-sec="portfolio">Portfólio</a>
+    <a href="#clientes" class="dock-link" data-sec="clientes">Clientes</a>
+  </div>
+  <a href="/orcamento.html" class="dock-cta" data-magnetic="0.25">Ver Planos <span class="arrow">→</span></a>
+</nav>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="topo">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="blob blob-1" data-depth="-0.04"></div>
+    <div class="blob blob-2" data-depth="0.05"></div>
+    <div class="blob blob-3" data-depth="0.09"></div>
+  </div>
+  <div class="hero-inner" id="heroInner">
+    <div>
+      <p class="hero-kicker fade-in" style="transition-delay:0.1s">criamos
+        <span class="rot" id="rot" aria-live="polite">
+          <span class="rot-word in">marcas.</span>
+          <span class="rot-word">presença.</span>
+          <span class="rot-word">conteúdo.</span>
+          <span class="rot-word">desejo.</span>
+        </span>
+      </p>
+      <h1 class="hero-title" aria-label="Studio Pulga">
+        <span class="line" aria-hidden="true"><span data-split>STUDIO</span></span>
+        <span class="line" aria-hidden="true"><span data-split>PULGA</span></span>
+      </h1>
+      <p class="hero-sub fade-in" style="transition-delay:0.55s">Gestão de marca, produção de conteúdo e identidade visual para quem quer presença real nas redes.</p>
+      <div class="hero-btns fade-in" style="transition-delay:0.7s">
+        <a href="/orcamento.html" class="btn btn-primary" data-magnetic="0.3"><span class="roll"><span>Ver Planos ↗</span><span>Ver Planos ↗</span></span></a>
+        <a href="#sobre" class="btn btn-secondary" data-magnetic="0.3"><span class="roll"><span>Conheça o Studio</span><span>Conheça o Studio</span></span></a>
+      </div>
+    </div>
+    <div class="hero-stack" aria-hidden="true">
+      <svg class="hero-badge" viewBox="0 0 120 120">
+        <defs><path id="circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+        <text><textPath href="#circ">studio pulga · obras digitais · </textPath></text>
+        <circle cx="60" cy="60" r="4" fill="#6E2C14"/>
+      </svg>
+      <div class="float float-1" data-depth="0.035"><img src="/v2/port3.webp" alt=""></div>
+      <div class="float float-2" data-depth="0.07"><img src="/v2/port5.webp" alt=""></div>
+      <div class="float float-3" data-depth="0.11"><img src="/v2/port1.webp" alt=""></div>
+    </div>
+  </div>
+  <div class="scroll-cue fade-in" style="transition-delay:1s"><i></i>Role</div>
+</section>
+
+<!-- BAND -->
+<section class="band" aria-label="Manifesto">
+  <p class="band-text" id="bandText">Não somos só uma agência. Somos o <em>Studio criativo</em> que transforma marcas comuns em <strong>presenças que marcam.</strong></p>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="section">
+    <div class="sobre-grid">
+      <div class="rv-group">
+        <div class="section-tag">Sobre o Studio</div>
+        <h2 class="section-title"><span class="line"><span>Criadores de</span></span><span class="line"><span>obras digitais.</span></span></h2>
+        <p class="sobre-desc rv">Somos um studio de marketing com sede no litoral de São Paulo, especializados em gestão de marca, produção de conteúdo e identidade visual para arquitetura, design de interiores e engenharia.</p>
+        <p class="sobre-desc rv" style="--d:0.1s">Cada entrega nasce de um olhar criterioso. Não fazemos conteúdo pelo volume — fazemos pelo impacto. Sua marca, nossa obsessão.</p>
+        <div class="sobre-points rv" style="--d:0.2s">
+          <span class="chip">Arquitetura</span><span class="chip">Interiores</span><span class="chip">Engenharia</span>
+        </div>
+      </div>
+      <div class="video-wrap" id="videoWrap">
+        <video id="sobreVideo" src="/video_pulga.mp4" poster="/v2/video-poster.webp" muted loop playsinline preload="metadata"></video>
+        <button class="mute-btn" id="muteBtn" type="button" aria-pressed="false" aria-label="Ativar som do vídeo">
+          <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="muteLabel">Som</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="svc" id="servicos">
+  <div class="section">
+    <div class="svc-head rv-group">
+      <div>
+        <div class="section-tag">O que fazemos</div>
+        <h2 class="section-title"><span class="line"><span>Serviços</span></span></h2>
+      </div>
+      <p class="rv">Seis frentes que se conectam para que sua marca fale a mesma língua em todo lugar.</p>
+    </div>
+    <div class="svc-list" id="svcList">
+      <div class="svc-row rv" data-img="0"><div class="svc-row-inner"><span class="svc-num">01</span><h3 class="svc-name">Gestão de redes sociais</h3><span class="svc-plus" aria-hidden="true"></span></div><div class="svc-desc"><div><p>Planejamento, legendas, calendário mensal, métricas e reuniões de alinhamento. Presença ativa, consistente e com propósito.</p></div></div></div>
+      <div class="svc-row rv" data-img="1"><div class="svc-row-inner"><span class="svc-num">02</span><h3 class="svc-name">Diárias presenciais</h3><span class="svc-plus" aria-hidden="true"></span></div><div class="svc-desc"><div><p>Captação de vídeos e fotos no seu espaço. Conteúdo real e autêntico que gera autoridade e aproxima seu público.</p></div></div></div>
+      <div class="svc-row rv" data-img="2"><div class="svc-row-inner"><span class="svc-num">03</span><h3 class="svc-name">Gestor de marca</h3><span class="svc-plus" aria-hidden="true"></span></div><div class="svc-desc"><div><p>Coerência visual e estratégica no seu perfil. Cores, tom de voz e identidade alinhados para que sua marca seja reconhecida.</p></div></div></div>
+      <div class="svc-row rv" data-img="3"><div class="svc-row-inner"><span class="svc-num">04</span><h3 class="svc-name">Estudo de marca e rebranding</h3><span class="svc-plus" aria-hidden="true"></span></div><div class="svc-desc"><div><p>Definição e redefinição de bio, logo, destaques e moodboard. Para quem quer recomeçar com mais clareza.</p></div></div></div>
+      <div class="svc-row rv" data-img="4"><div class="svc-row-inner"><span class="svc-num">05</span><h3 class="svc-name">Tráfego pago</h3><span class="svc-plus" aria-hidden="true"></span></div><div class="svc-desc"><div><p>Campanhas no Meta Ads para atrair leads qualificados. Gerenciamento estratégico com foco em resultado real.</p></div></div></div>
+      <div class="svc-row rv" data-img="5"><div class="svc-row-inner"><span class="svc-num">06</span><h3 class="svc-name">Design gráfico</h3><span class="svc-plus" aria-hidden="true"></span></div><div class="svc-desc"><div><p>Criação de materiais digitais com identidade. Artes, apresentações e peças de campanha com o olhar do Studio.</p></div></div></div>
+    </div>
+  </div>
+  <div class="svc-preview" id="svcPreview" aria-hidden="true">
+    <img src="/v2/port6.webp" alt=""><img src="/v2/port4.webp" alt=""><img src="/v2/port3.webp" alt="">
+    <img src="/preview__4_.webp" alt=""><img src="/v2/port1.webp" alt=""><img src="/v2/port5.webp" alt="">
+  </div>
+</section>
+
+<!-- PORTFÓLIO -->
+<section class="port" id="portfolio">
+  <div class="port-sticky">
+    <div class="port-track" id="portTrack">
+      <div class="port-intro rv-group">
+        <div class="section-tag">Nossos Olhares</div>
+        <h2 class="section-title" style="margin-bottom:24px"><span class="line"><span>Portfólio</span></span></h2>
+        <p class="rv">Arquitetura, obra, interiores e pessoas. Cada imagem é captada com o mesmo cuidado que temos com a sua marca.</p>
+        <div class="drag-hint rv" style="--d:0.15s"><span class="hint-desk">Role para explorar</span><span class="hint-touch" style="display:none">Deslize para explorar</span>
+          <svg width="28" height="10" viewBox="0 0 28 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h26M22 1l4 4-4 4"/></svg>
+        </div>
+      </div>
+      <figure class="port-item" data-i="0"><img src="/v2/port1.webp" alt="Fachada de edifício iluminada à noite" loading="lazy"><span class="idx">01</span></figure>
+      <figure class="port-item" data-i="1"><img src="/v2/port3.webp" alt="Poltronas de veludo verde em ambiente de interiores" loading="lazy"><span class="idx">02</span></figure>
+      <figure class="port-item" data-i="2"><img src="/v2/port5.webp" alt="Janela com vista para o mar" loading="lazy"><span class="idx">03</span></figure>
+      <figure class="port-item" data-i="3"><img src="/v2/port2.webp" alt="Escavadeira em canteiro de obra" loading="lazy"><span class="idx">04</span></figure>
+      <figure class="port-item" data-i="4"><img src="/v2/port4.webp" alt="Mãos escolhendo materiais sobre projeto" loading="lazy"><span class="idx">05</span></figure>
+      <figure class="port-item" data-i="5"><img src="/v2/port6.webp" alt="Retrato de arquiteto gesticulando" loading="lazy"><span class="idx">06</span></figure>
+      <a class="port-end" href="https://instagram.com/studio.pulga" target="_blank" rel="noopener">
+        <span>Tem muito mais no</span>
+        <strong>@studio<br>.pulga</strong>
+        <span class="big-arrow">→</span>
+      </a>
+    </div>
+    <div class="port-bar" aria-hidden="true"><i id="portBar"></i></div>
+    <div class="port-count" id="portCount" aria-hidden="true">01 / 06</div>
+  </div>
+</section>
+
+<!-- CLIENTES -->
+<section class="tape-section" id="clientes">
+  <div class="tape-label">Pulguinhas que escolheram</div>
+  <div class="tape-row"><div class="tape-track" data-dir="-1"></div></div>
+  <div class="tape-row alt"><div class="tape-track" data-dir="1"></div></div>
+</section>
+
+<!-- EQUIPE -->
+<section class="equipe">
+  <div class="section">
+    <div class="rv-group">
+      <div class="section-tag">Quem faz acontecer</div>
+      <h2 class="section-title"><span class="line"><span>Quem representa</span></span></h2>
+    </div>
+    <div class="equipe-grid">
+      <div class="equipe-foto rv" data-speed="-0.06"><img src="/preview__2_.webp" alt="Equipe Studio Pulga" loading="lazy"></div>
+      <div class="equipe-foto rv" style="--d:0.1s" data-speed="0.05"><img src="/preview__4_.webp" alt="Equipe Studio Pulga" loading="lazy"></div>
+      <div class="equipe-foto rv" style="--d:0.2s" data-speed="-0.02"><img src="/preview__3_.webp" alt="Equipe Studio Pulga" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-marquee" id="ctaMarquee" aria-hidden="true"><span>PULGA ✦ PULGA ✦</span><span>PULGA ✦ PULGA ✦</span></div>
+  <div class="cta-inner rv-group">
+    <h2 class="cta-title section-title" style="margin-bottom:22px"><span class="line"><span>Pronto para criar</span></span><span class="line"><span>sua presença?</span></span></h2>
+    <p class="cta-sub rv">Conheça nossos serviços e comece agora.</p>
+    <div class="rv" style="--d:0.15s"><a href="/orcamento.html" class="btn btn-white" data-magnetic="0.4"><span class="roll"><span>Ver Serviços →</span><span>Ver Serviços →</span></span></a></div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-lead">Sua marca, nossa obsessão.</p>
+    <div class="footer-col">
+      <h4>Navegar</h4>
+      <a href="#sobre">Studio</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#portfolio">Portfólio</a>
+      <a href="/orcamento.html">Planos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <a href="https://instagram.com/studio.pulga" target="_blank" rel="noopener">@studio.pulga</a>
+      <a href="https://wa.me/5513996057099" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:contato@studiopulga.com.br">contato@studiopulga.com.br</a>
+    </div>
+    <div class="footer-col">
+      <h4>Clientes</h4>
+      <a href="https://studio-portal-theta.vercel.app" target="_blank" rel="noopener">Área do Cliente</a>
+    </div>
+  </div>
+  <div class="footer-mark" id="footerMark" aria-hidden="true"></div>
+  <div class="footer-copy"><span>© 2026 Studio Pulga — Todos os direitos reservados.</span><span>Litoral de São Paulo</span></div>
+</footer>
+
+<a href="https://wa.me/5513996057099" class="wa-btn" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-label">WhatsApp</span>
+</a>
+
+<a href="/index.html" class="v2-tag" data-no-transition><b>PRÉVIA V2</b> ver versão atual</a>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Portfólio ampliado" aria-hidden="true">
+  <img id="lbImg" alt="">
+  <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Fechar">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Anterior">←</button>
+  <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Próxima">→</button>
+  <div class="lb-count" id="lbCount"></div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><div class="cursor-ring"><em id="cursorLabel">Ver</em></div><div class="cursor-dot"></div></div>
+<div class="pt" id="pt" aria-hidden="true"></div>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+  const wide = () => innerWidth > 900 && fine;
+  let vw = innerWidth, vh = innerHeight;
+
+  /* ── split de letras ── */
+  const splitChars = (el, baseDelay = 0, step = 0.045) => {
+    const text = el.textContent;
+    el.textContent = '';
+    [...text].forEach((ch, i) => {
+      const s = document.createElement('span');
+      s.className = 'char';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      s.style.transitionDelay = (baseDelay + i * step) + 's';
+      el.appendChild(s);
+    });
+  };
+  $$('[data-split]').forEach((el, i) => splitChars(el, 0.15 + i * 0.12));
+
+  /* ── palavras do manifesto ── */
+  const band = $('#bandText');
+  const wrapWords = node => {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          const s = document.createElement('span'); s.className = 'w'; s.textContent = part; frag.appendChild(s);
+        });
+        n.replaceWith(frag);
+      } else wrapWords(n);
+    });
+  };
+  wrapWords(band);
+  const words = $$('.w', band);
+
+  /* ── fita de clientes ── */
+  const clients = ['Amanda Mehanna','Claudia Villela','Bonnari Engenharia','Portobello Shop Santos','Studio Mape','Adriana Paiva','Leandra Ferreira','Tais Ferreira','Stylo Classe','Ferraz Interiores','Cristina Ferraz','ABC da Construção PG','Mariko Yamauti','Fanny Fouquet','Arquiteta Tais Cunha','Arquiteta Nayara Amorim','Planejados & Cia','Bima Arquitetura','Somma Arquitetura','GV Arch Studio'];
+  const tapes = $$('.tape-track').map((track, r) => {
+    const list = r ? [...clients].reverse() : clients;
+    const html = list.map(n => `<span class="tape-name">${n.replace('&','&amp;')}</span><span class="tape-dot">✦</span>`).join('');
+    track.innerHTML = html + html;
+    return { el: track, dir: +track.dataset.dir, x: 0, half: 0 };
+  });
+
+  /* ── marca do rodapé ── */
+  const mark = $('#footerMark');
+  [...'STUDIO PULGA'].forEach((ch, i) => {
+    const s = document.createElement('span');
+    s.textContent = ch === ' ' ? ' ' : ch;
+    s.style.setProperty('--i', i);
+    mark.appendChild(s);
+  });
+
+  /* ── loader (só na primeira visita da sessão) ── */
+  const loader = $('#loader');
+  let seen = false;
+  try { seen = sessionStorage.getItem('sp-v2-seen') === '1'; } catch (e) {}
+  const start = () => document.body.classList.add('is-ready');
+  if (reduced || seen) {
+    loader.remove();
+    requestAnimationFrame(() => requestAnimationFrame(start));
+  } else {
+    const lw = $('#loaderWord');
+    [...'PULGA'].forEach((ch, i) => {
+      const s = document.createElement('span'); s.textContent = ch; s.style.animationDelay = (0.1 + i * 0.06) + 's'; lw.appendChild(s);
+    });
+    const countEl = $('#loaderCount');
+    const t0 = performance.now(), dur = 1400;
+    const tick = now => {
+      const p = clamp((now - t0) / dur, 0, 1);
+      countEl.textContent = Math.round((1 - Math.pow(1 - p, 3)) * 100);
+      if (p < 1) return requestAnimationFrame(tick);
+      setTimeout(() => {
+        loader.classList.add('done');
+        setTimeout(start, 250);
+        setTimeout(() => loader.remove(), 1100);
+        try { sessionStorage.setItem('sp-v2-seen', '1'); } catch (e) {}
+      }, 150);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  /* ── palavra rotativa ── */
+  const rotWords = $$('.rot-word');
+  const rot = $('#rot');
+  const sizeRot = () => { rot.style.width = Math.max(...rotWords.map(w => w.scrollWidth)) + 'px'; };
+  sizeRot();
+  let ri = 0;
+  if (!reduced) setInterval(() => {
+    const cur = rotWords[ri];
+    cur.classList.remove('in'); cur.classList.add('out');
+    ri = (ri + 1) % rotWords.length;
+    const nxt = rotWords[ri];
+    nxt.classList.remove('out');
+    void nxt.offsetWidth;
+    nxt.classList.add('in');
+    setTimeout(() => cur.classList.remove('out'), 900);
+  }, 2400);
+
+  /* ── smooth scroll ── */
+  let lenis = null;
+  if (!reduced && window.Lenis) {
+    lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+  }
+  $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    const target = id === '#topo' ? 0 : $(id);
+    if (target === null) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(target, { duration: 1.6, easing: t => 1 - Math.pow(1 - t, 4) });
+    else if (target === 0) scrollTo({ top: 0, behavior: 'smooth' });
+    else target.scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  /* ── reveals ── */
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+  }), { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  $$('.rv, .rv-group, .footer-mark').forEach(el => io.observe(el));
+
+  /* ── vídeo: toca só quando visível ── */
+  const video = $('#sobreVideo'), muteBtn = $('#muteBtn'), muteLabel = $('#muteLabel');
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { video.play().catch(() => {}); }
+    else { video.pause(); if (!video.muted) toggleMute(); }
+  }, { threshold: 0.25 }).observe(video);
+  function toggleMute() {
+    video.muted = !video.muted;
+    muteBtn.classList.toggle('on', !video.muted);
+    muteBtn.setAttribute('aria-pressed', String(!video.muted));
+    muteBtn.setAttribute('aria-label', video.muted ? 'Ativar som do vídeo' : 'Silenciar vídeo');
+    muteLabel.textContent = video.muted ? 'Som' : 'Mudo';
+  }
+  muteBtn.addEventListener('click', toggleMute);
+
+  /* ── serviços: acordeão + prévia flutuante ── */
+  const rows = $$('.svc-row');
+  const preview = $('#svcPreview'), previewImgs = $$('img', preview);
+  const openRow = row => rows.forEach(r => r.classList.toggle('open', r === row && !r.classList.contains('open')));
+  rows.forEach(row => {
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('role', 'button');
+    if (fine) {
+      row.addEventListener('pointerenter', e => {
+        if (e.pointerType !== 'mouse') return;
+        rows.forEach(r => r.classList.toggle('open', r === row));
+        previewImgs.forEach((img, i) => img.classList.toggle('cur', i === +row.dataset.img));
+        preview.classList.add('show');
+      });
+    }
+    row.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') openRow(row); });
+    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRow(row); } });
+  });
+  $('#svcList').addEventListener('pointerleave', e => { if (e.pointerType !== 'mouse') return; preview.classList.remove('show'); rows.forEach(r => r.classList.remove('open')); });
+
+  /* ── portfólio horizontal ── */
+  const port = $('#portfolio'), track = $('#portTrack'), bar = $('#portBar'), count = $('#portCount');
+  const items = $$('.port-item');
+  let portDist = 0;
+  const sizePort = () => {
+    if (wide() && !reduced) {
+      portDist = Math.max(0, track.scrollWidth - vw);
+      port.style.height = (vh + portDist) + 'px';
+    } else { portDist = 0; port.style.height = ''; track.style.transform = ''; }
+  };
+  // no mobile o carrossel é nativo — barra acompanha o scroll lateral
+  track.addEventListener('scroll', () => {
+    if (wide()) return;
+    const max = track.scrollWidth - track.clientWidth;
+    const p = max > 0 ? track.scrollLeft / max : 0;
+    bar.style.transform = `scaleX(${p})`;
+    count.textContent = String(clamp(Math.round(p * 5) + 1, 1, 6)).padStart(2, '0') + ' / 06';
+  }, { passive: true });
+
+  /* ── lightbox ── */
+  const lb = $('#lightbox'), lbImg = $('#lbImg'), lbCount = $('#lbCount');
+  let lbi = 0;
+  const showLb = i => {
+    lbi = (i + items.length) % items.length;
+    const src = $('img', items[lbi]);
+    lbImg.src = src.src; lbImg.alt = src.alt;
+    lbCount.textContent = String(lbi + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+  };
+  const openLb = i => { showLb(i); lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); lenis && lenis.stop(); $('#lbClose').focus({ preventScroll: true }); };
+  const closeLb = () => { lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); lenis && lenis.start(); };
+  items.forEach((it, i) => it.addEventListener('click', () => openLb(i)));
+  $('#lbClose').addEventListener('click', closeLb);
+  $('#lbPrev').addEventListener('click', e => { e.stopPropagation(); showLb(lbi - 1); });
+  $('#lbNext').addEventListener('click', e => { e.stopPropagation(); showLb(lbi + 1); });
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowRight') showLb(lbi + 1);
+    if (e.key === 'ArrowLeft') showLb(lbi - 1);
+  });
+
+  /* ── nav: some ao descer, volta ao subir + pílula ativa ── */
+  const nav = $('#nav'), pill = $('#dockPill'), links = $$('.dock-link');
+  let activeLink = null;
+  const movePill = link => {
+    if (link === activeLink) return;
+    activeLink = link;
+    links.forEach(l => l.classList.toggle('active', l === link));
+    if (!link) { pill.style.opacity = 0; return; }
+    pill.style.opacity = 1;
+    pill.style.width = link.offsetWidth + 'px';
+    pill.style.transform = `translateX(${link.offsetLeft}px)`;
+  };
+  const sections = links.map(l => ({ link: l, el: $('#' + l.dataset.sec) }));
+
+  /* ── magnético ── */
+  if (fine && !reduced) $$('[data-magnetic]').forEach(el => {
+    const k = +el.dataset.magnetic;
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * k}px, ${(e.clientY - r.top - r.height / 2) * k}px)`;
+      el.style.transition = 'transform 0.2s ease-out';
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transition = 'transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+      el.style.transform = '';
+    });
+  });
+
+  /* ── cursor ── */
+  const cursor = $('#cursor'), cursorLabel = $('#cursorLabel'), ring = $('.cursor-ring'), dot = $('.cursor-dot');
+  let mx = vw / 2, my = vh / 2, rx = mx, ry = my, px = mx, py = my;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+  document.addEventListener('mouseleave', () => cursor.style.opacity = 0);
+  document.addEventListener('mouseenter', () => cursor.style.opacity = 1);
+  const setCursor = (cls, label) => {
+    cursor.classList.remove('hover', 'label');
+    if (cls) cursor.classList.add(cls);
+    if (label) cursorLabel.textContent = label;
+  };
+  $$('a, button, [data-magnetic]').forEach(el => {
+    el.addEventListener('mouseenter', () => setCursor('hover'));
+    el.addEventListener('mouseleave', () => setCursor());
+  });
+  items.forEach(el => {
+    el.addEventListener('mouseenter', () => setCursor('label', 'Ver'));
+    el.addEventListener('mouseleave', () => setCursor());
+  });
+  $$('.cta, .loader, .lightbox').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('dark'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('dark'));
+  });
+
+  /* ── transição de página ── */
+  const pt = $('#pt');
+  $$('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || /^(https?:|mailto:|tel:)/.test(href) || link.target === '_blank') return;
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      pt.classList.add('active');
+      setTimeout(() => { location.href = href; }, 560);
+    });
+  });
+  addEventListener('pageshow', () => pt.classList.remove('active'));
+
+  /* ── medidas ── */
+  const heroInner = $('#heroInner');
+  const blobs = $$('.hero [data-depth]');
+  const videoWrap = $('#videoWrap');
+  const team = $$('[data-speed]');
+  const progress = $('.scroll-progress');
+  const marquee = $('#ctaMarquee');
+  const measure = () => {
+    vw = innerWidth; vh = innerHeight;
+    tapes.forEach(t => t.half = t.el.scrollWidth / 2);
+    sizePort(); sizeRot();
+    lenis && lenis.resize();
+  };
+  addEventListener('resize', measure);
+  addEventListener('load', measure);
+  document.fonts && document.fonts.ready.then(measure);
+  measure();
+
+  /* ── loop único de animação ── */
+  let lastY = scrollY, vel = 0, lastScrollDir = 0, mqx = 0;
+  let hmx = 0, hmy = 0;
+  const raf = time => {
+    lenis && lenis.raf(time);
+    const y = scrollY;
+    const dy = y - lastY; lastY = y;
+    vel = lerp(vel, dy, 0.12);
+
+    // barra de progresso
+    const max = document.documentElement.scrollHeight - vh;
+    progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+
+    // nav
+    if (Math.abs(dy) > 2) lastScrollDir = Math.sign(dy);
+    nav.classList.toggle('hide', y > vh * 0.6 && lastScrollDir > 0 && !lb.classList.contains('open'));
+    let current = null;
+    sections.forEach(s => { const r = s.el.getBoundingClientRect(); if (r.top < vh * 0.45 && r.bottom > vh * 0.45) current = s.link; });
+    if (wide()) movePill(current);
+
+    if (!reduced) {
+      // hero: profundidade com o mouse + saída ao rolar
+      hmx = lerp(hmx, (mx - vw / 2), 0.06); hmy = lerp(hmy, (my - vh / 2), 0.06);
+      if (y < vh * 1.2) {
+        blobs.forEach(b => { const d = +b.dataset.depth; b.style.transform = `translate3d(${hmx * d * 3}px, ${hmy * d * 3 + y * d * 4}px, 0)`; });
+        const hp = clamp(y / vh, 0, 1);
+        heroInner.style.transform = `translate3d(0, ${hp * 120}px, 0) scale(${1 - hp * 0.06})`;
+        heroInner.style.opacity = 1 - hp * 1.1;
+      }
+
+      // manifesto: acende palavra a palavra
+      const br = band.getBoundingClientRect();
+      const bp = clamp((vh * 0.85 - br.top) / (br.height + vh * 0.35), 0, 1);
+      const lit = Math.round(bp * words.length);
+      words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+
+      // vídeo: abre a máscara conforme entra
+      const vr = videoWrap.getBoundingClientRect();
+      if (vr.top < vh && vr.bottom > 0) {
+        const vp = clamp((vh - vr.top) / (vh * 0.9), 0, 1);
+        const ins = (1 - vp) * 14;
+        videoWrap.style.clipPath = `inset(${ins}% ${ins}% ${ins}% ${ins}% round ${28 - vp * 4}px)`;
+        video.style.transform = `scale(${1.18 - vp * 0.18}) translateY(${(vr.top + vr.height / 2 - vh / 2) * -0.06}px)`;
+      }
+
+      // fitas de clientes reagem à velocidade
+      tapes.forEach(t => {
+        if (!t.half) return;
+        t.x += t.dir * (0.6 + Math.min(Math.abs(vel) * 0.35, 14));
+        if (t.x <= -t.half) t.x += t.half;
+        if (t.x > 0) t.x -= t.half;
+        t.el.style.transform = `translate3d(${t.x}px,0,0) skewX(${clamp(-vel * 0.25, -8, 8)}deg)`;
+      });
+
+      // portfólio horizontal
+      if (portDist) {
+        const pr = port.getBoundingClientRect();
+        const p = clamp(-pr.top / portDist, 0, 1);
+        track.style.transform = `translate3d(${-p * portDist}px,0,0)`;
+        bar.style.transform = `scaleX(${p})`;
+        count.textContent = String(clamp(Math.round(p * 5) + 1, 1, 6)).padStart(2, '0') + ' / 06';
+        items.forEach(it => {
+          const r = it.getBoundingClientRect();
+          if (r.right < 0 || r.left > vw) return;
+          const c = (r.left + r.width / 2 - vw / 2) / vw;
+          $('img', it).style.transform = `translate3d(${c * -8}%,0,0)`;
+        });
+      }
+
+      // equipe: parallax
+      team.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        el.style.translate = `0 ${(r.top + r.height / 2 - vh / 2) * +el.dataset.speed}px`;
+      });
+
+      // cta: marquee contínuo + velocidade
+      mqx -= 0.5 + Math.abs(vel) * 0.25;
+      const mw = marquee.scrollWidth / 2;
+      if (mw && mqx <= -mw) mqx += mw;
+      marquee.style.transform = `translate3d(${mqx}px,0,0)`;
+    } else {
+      words.forEach(w => w.classList.add('lit'));
+    }
+
+    // cursor
+    if (fine) {
+      rx = lerp(rx, mx, 0.16); ry = lerp(ry, my, 0.16);
+      px = lerp(px, mx, 0.12); py = lerp(py, my, 0.12);
+      dot.style.transform = `translate3d(${mx}px,${my}px,0)`;
+      ring.style.transform = `translate3d(${rx}px,${ry}px,0)`;
+      preview.style.left = px + 'px'; preview.style.top = py + 'px';
+    }
+    requestAnimationFrame(raf);
+  };
+  requestAnimationFrame(raf);
+})();
+</script>
+</body>
+</html>
